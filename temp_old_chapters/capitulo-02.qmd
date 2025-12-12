@@ -1,0 +1,364 @@
+
+La **estática comparativa** es una técnica fundamental del análisis económico que estudia cómo cambian las variables endógenas de un modelo cuando **una o varias variables exógenas** se modifican, manteniendo el sistema en equilibrio antes y después del cambio.
+
+Su lógica es:
+
+1. Partimos de un equilibrio inicial.  
+2. Cambia un parámetro exógeno.  
+3. El sistema se ajusta y alcanza un nuevo equilibrio.  
+4. Comparar ambos equilibrios → efecto total.
+
+---
+
+## **1. Definición Formal**
+
+Sea un sistema económico definido por:
+
+$$
+F(x,\, p) = 0
+$$
+
+donde:
+
+- $x$ = vector de variables endógenas  
+- $p$ = vector de parámetros exógenos  
+- $F$ = conjunto de ecuaciones del modelo  
+
+Si el parámetro $p$ cambia infinitesimalmente, la estática comparativa calcula:
+
+$$
+\frac{\partial x}{\partial p}
+$$
+
+Este es el efecto del cambio del parámetro sobre el equilibrio.
+
+---
+
+## **2. Ejemplo Clásico: Oferta y Demanda**
+
+Modelo:
+
+$$Q_d = a - bP$$
+$$Q_s = -c + dP$$
+
+Equilibrio:
+
+$$a - bP = -c + dP$$
+
+Precio de equilibrio:
+
+$$
+P^* = \frac{a + c}{b + d}
+$$
+
+### **Derivada del equilibrio respecto al parámetro de demanda $a$**
+
+Queremos:
+
+$$
+\frac{\partial P^*}{\partial a}
+$$
+
+Cálculo:
+
+$$
+P^* = \frac{a + c}{b + d}
+$$
+
+Derivando respecto a $a$:
+
+$$
+\frac{\partial P^*}{\partial a}
+= \frac{1}{b + d}
+$$
+
+**Interpretación económica:**
+
+- Como $b + d > 0$, un aumento en $a$ (desplazamiento de demanda)  
+  **incrementa el precio de equilibrio**.
+
+---
+
+## **3. Método General: Teorema de la Función Implícita**
+
+Para un sistema:
+
+$$
+F(x, p) = 0
+$$
+
+la derivada de la solución implícita es:
+
+$$
+\frac{\partial x}{\partial p}
+=
+- \left( \frac{\partial F}{\partial x} \right)^{-1}
+\left( \frac{\partial F}{\partial p} \right)
+$$
+
+donde:
+
+- $\frac{\partial F}{\partial x}$ → matriz jacobiana respecto a las variables endógenas  
+- $\frac{\partial F}{\partial p}$ → matriz de derivadas respecto a parámetros  
+
+Este es el pilar matemático del **equilibrio general** y de la **estática comparativa moderna**.
+
+---
+
+## **4. Ejemplo de Estática Comparativa en Macroeconomía**
+
+Modelo keynesiano:
+
+$$Y = a + bY + I_0 + G_0$$
+
+Equilibrio:
+
+$$Y^* = \frac{1}{1 - b}(a + I_0 + G_0)$$
+
+### **Derivadas importantes**
+
+1. Efecto del gasto público:
+
+$$
+\frac{\partial Y^*}{\partial G_0} = \frac{1}{1 - b}
+$$
+
+(**Multiplicador fiscal**)
+
+2. Efecto de la propensión marginal a consumir:
+
+$$
+\frac{\partial Y^*}{\partial b}
+= \frac{a + I_0 + G_0}{(1 - b)^2}
+$$
+
+Interpretación:
+
+- A mayor $b$, mayor sensibilidad del ingreso a cambios en gasto e inversión.
+
+---
+
+## **5. Paso a Paso General para Resolver Estática Comparativa**
+
+1. **Escribir la ecuación de equilibrio.**
+2. **Resolver el equilibrio si es posible** (no siempre).
+3. **Derivar el equilibrio respecto al parámetro** que cambia.
+4. **Interpretar el signo y magnitud**.
+5. **Comprobar condiciones de validez**:
+   - Unicidad del equilibrio  
+   - Estabilidad  
+   - Diferenciabilidad  
+
+---
+
+## **6. Mini Ejemplo Computacional (Python)**
+
+```python
+import sympy as sp
+
+# Variables
+P = sp.symbols('P')
+a, b, c, d = sp.symbols('a b c d', positive=True)
+
+# Funciones de oferta y demanda
+Qd = a - b*P
+Qs = -c + d*P
+
+# Ecuación de equilibrio
+eq = sp.Eq(Qd, Qs)
+
+# Precio de equilibrio
+P_star = sp.solve(eq, P)[0]
+
+# Derivada de estatica comparativa respecto a 'a'
+dP_da = sp.diff(P_star, a)
+
+P_star, dP_da
+```
+
+## 7. Conexiones con otros temas — profundización
+
+La **estática comparativa** conecta de manera directa con numerosos núcleos teóricos y aplicaciones de política. Aquí profundizamos cada conexión y su relevancia.
+
+### 7.1 Relación con el *Teorema de la Función Implícita*
+El Teorema de la Función Implícita (TFI) justifica matemáticamente la existencia de derivadas de equilibrio respecto a parámetros.  
+Si el sistema de equilibrio $\mathbf{F}(\mathbf{x},\mathbf{p})=\mathbf{0}$ satisface las condiciones del TFI (Jacobeano $\partial\mathbf{F}/\partial\mathbf{x}$ invertible), entonces las soluciones $\mathbf{x}(\mathbf{p})$ son diferenciables y
+
+$$
+\frac{\partial \mathbf{x}}{\partial \mathbf{p}}
+= -\left(\frac{\partial \mathbf{F}}{\partial \mathbf{x}}\right)^{-1}
+\frac{\partial \mathbf{F}}{\partial \mathbf{p}}.
+$$
+
+**Importancia económica:** permite cuantificar efectos marginales locales de política o shocks sobre los precios, cantidades o el ingreso.
+
+---
+
+### 7.2 Base para política económica (fiscal, monetaria)
+- **Política fiscal:** la estática comparativa da el multiplicador fiscal (ej. $\partial Y^*/\partial G_0 = 1/(1-b)$ en el modelo keynesiano).  
+- **Política monetaria:** en modelos con tipo de interés y demanda de dinero, permite calcular cómo cambios en la oferta monetaria o tasa afectan $Y^*$, $P^*$ o $i^*$.
+
+Interpretación práctica: la magnitud del efecto (no sólo signo) guía la intensidad de la política.
+
+---
+
+### 7.3 Aplicaciones específicas donde se usa la estática comparativa
+
+- **Modelos de competencia imperfecta:** cambios en costos fijos o poder de mercado afectan precio y cantidad de equilibrio localmente (p. ej. mark-up).  
+- **IS–LM:** permite calcular $\partial Y/\partial G$ o $\partial i/\partial M$ manteniendo consistencia del sistema.  
+- **Oferta y demanda laboral:** evaluar cómo un subsidio salarial o impuesto sobre nómina desplaza la oferta y cuál es el efecto sobre salario de equilibrio y empleo.  
+- **Equilibrio general walrasiano:** la estática comparativa es la herramienta básica para estudiar cómo cambios en dotaciones o preferencias desplazan precios walrasianos.
+
+---
+
+## 8. Ejercicios propuestos (resueltos / guía detallada)
+
+A continuación derivaciones paso a paso, interpretaciones y un script en Python para graficar $P^*$ cuando $a$ varía.
+
+### Ejercicio 1 — Derivar $\displaystyle \frac{\partial P^*}{\partial b}$ para el modelo lineal
+
+**Modelo (notación usada):**
+
+- Demanda: $Q_d = a - \beta P$.  
+- Oferta:  $Q_s = -\gamma + \delta P$.  
+- Equilibrio: $Q_d = Q_s$.
+
+Precio de equilibrio:
+
+$$
+P^* = \frac{a + \gamma}{\beta + \delta}.
+$$
+
+Aquí la letra $\beta$ corresponde al símbolo $b$ del enunciado; para evitar confusiones usaré $\beta$.
+
+**Derivada respecto a $\beta$ (pendiente de la demanda):**
+
+$$
+\frac{\partial P^*}{\partial \beta}
+= \frac{\partial}{\partial \beta}\left(\frac{a + \gamma}{\beta + \delta}\right)
+= -(a+\gamma)\frac{1}{(\beta+\delta)^2}.
+$$
+
+**Interpretación:**
+
+- Signo negativo: si la demanda se hace *más sensible al precio* (aumenta $\beta$ — pendiente absoluta mayor), el precio de equilibrio disminuye.  
+- Magnitud: la variación es proporcional a $-(a+\gamma)$ y decrece con $(\beta+\delta)^2$.
+
+**Nota:** si el enunciado usó la letra $b$ para la propensión a consumir (modelo keynesiano), esa es otra $b$ distinta; aquí es la pendiente de demanda.
+
+---
+
+### Ejercicio 2 — Analiza el efecto de un aumento en $G_0$ cuando $b \to 1$
+
+**Modelo keynesiano simple:**
+
+$$
+Y^* = \frac{a + I_0 + G_0}{1 - b}
+$$
+
+Derivada del ingreso de equilibrio con respecto a $G_0$:
+
+$$
+\frac{\partial Y^*}{\partial G_0} = \frac{1}{1 - b}.
+$$
+
+**Comportamiento cuando $b \to 1^{-}$:**
+
+- El multiplicador $\frac{1}{1-b} \to +\infty$ (diverge).  
+- Interpretación: si la propensión marginal a consumir $b$ es cercana a 1, pequeños aumentos en $G_0$ generan enormes cambios en $Y^*$ en este modelo simplificado; en la práctica indica que el modelo lineal sin mecanismos de ajuste o restricciones adicionales deja de ser realista cuando $b$ está muy cerca de 1 (se requieren fricciones, equilibrio general, o restricciones de capacidad).  
+- Para política: cuando $b$ alto, la política fiscal puede ser muy potente; pero en economía real aparecen efectos de oferta, precios, expectativas y capacidad que limitan ese crecimiento infinito.
+
+---
+
+### Ejercicio 3 — Modelo $Q_d = a - \beta P + mY$; derivar $\displaystyle \frac{\partial P^*}{\partial m}$
+
+**Asumimos** función de oferta estándar: $Q_s = -\gamma + \delta P$ (como antes).  
+Ecuación de equilibrio:
+
+$$
+a - \beta P + mY = -\gamma + \delta P.
+$$
+
+Agrupando términos en $P$:
+
+$$
+(\beta + \delta)P = a + \gamma + mY.
+$$
+
+Por tanto:
+
+$$
+P^*(m) = \frac{a + \gamma + mY}{\beta + \delta}.
+$$
+
+Derivada respecto a $m$ (manteniendo $Y$ como dada/exógena en este análisis estático):
+
+$$
+\frac{\partial P^*}{\partial m} = \frac{Y}{\beta + \delta}.
+$$
+
+**Interpretación:**
+
+- Si $m>0$ (la demanda aumenta con el ingreso), un aumento marginal de $m$ incrementa el precio de equilibrio en la proporción $Y/(\beta+\delta)$.  
+- En particular, el efecto es mayor cuanto mayor sea el nivel de ingreso $Y$ y menor la rigidez total $\beta+\delta$.
+
+**Nota sobre rol de $Y$:** si $Y$ no es exógeno (por ejemplo, en un modelo macro interdependiente), habría que resolver simultáneamente por $Y$ y $P$ y aplicar el TFI para obtener $\partial P^*/\partial m$ en equilibrio general.
+
+---
+
+### Ejercicio 4 — Graficar cómo cambia $P^*$ cuando $a$ aumenta de 100 a 200 (Python)
+
+**Idea:** calcular $P^*(a) = (a + \gamma)/(\beta + \delta)$ para una malla de $a\in[100,200]$ y graficar.
+
+**Código Python (listo para ejecutar en Jupyter / Quarto / Obsidian con plugin que ejecute código):**
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parámetros (puedes cambiar estos valores)
+beta = 5.0     # pendiente demanda
+delta = 2.0    # pendiente oferta
+gamma = 10.0   # intercepto oferta
+
+# Rango de a
+a_vals = np.linspace(100, 200, 201)  # desde 100 hasta 200, paso 0.5
+
+# Calcular P*
+P_star = (a_vals + gamma) / (beta + delta)
+
+# Plot
+plt.figure(figsize=(8,5))
+plt.plot(a_vals, P_star, linewidth=2)
+plt.xlabel('a (desplazamiento de demanda)')
+plt.ylabel('P* (precio de equilibrio)')
+plt.title('Efecto de aumentar a en P* — Modelo lineal')
+plt.grid(True)
+plt.tight_layout()
+
+# Guardar si lo deseas
+plt.savefig('Pstar_vs_a.png', dpi=200)
+plt.show()
+```
+
+**Comentarios prácticos:**
+
+- La relación es lineal: $P^*$ se incrementa en pendiente $1/(\beta+\delta)$ con $a$.
+    
+- Si quieres comparar varios valores de $(\beta,\delta)$ en la misma gráfica, calcula varias líneas y traza con etiquetas.
+    
+
+---
+
+## Sugerencias de estudio y ejercicios avanzados
+
+1. Repetir Ejercicio 1 pero derivando $\partial Q^*/\partial \beta$ (efecto sobre cantidad).
+    
+2. Resolver el sistema 2×2 (dos bienes) y calcular el Jacobiano explícito; verificar $\det(J)\neq 0$.
+    
+3. Extender el Ejercicio 4 incluyendo un choque en $\gamma$ (oferta) y comparar sensibilidad.
+    
+4. Implementar versiones estocásticas (simular $a$ aleatorio) y calcular distribución de $P^*$.
+    
+
+---

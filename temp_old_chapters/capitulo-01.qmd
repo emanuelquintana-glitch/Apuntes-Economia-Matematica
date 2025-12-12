@@ -1,0 +1,157 @@
+
+## 1. Idea General
+
+El Teorema de la Función Implícita (TFI) permite resolver una ecuación del tipo
+
+$$F(x, y) = 0$$
+
+y garantizar que, bajo ciertas condiciones, existe una función
+
+$$y = g(x)$$
+
+tal que $(F(x, g(x)) = 0)$.
+
+Es fundamental en:
+
+- Estática comparativa  
+- Equilibrio general  
+- IS-LM  
+- Competencia imperfecta  
+- Curvas de demanda y oferta  
+- Modelos DSGE  
+
+---
+
+## 2. Enunciado Formal
+
+Sea $(F: \mathbb{R}^2 \to \mathbb{R})$ una función continuamente diferenciable.
+
+Si existe un punto $((x_0, y_0))$ tal que:
+
+1. $(F(x_0, y_0) = 0$)  
+2. $(\frac{\partial F}{\partial y}(x_0, y_0) \neq 0$)
+
+Entonces existe una función $(y = g(x)$) definida localmente con:
+
+- $(g(x_0) = y_0)$
+- $(F(x, g(x)) = 0$)
+
+La derivada viene dada por:
+
+$$
+\frac{dy}{dx}
+= -\frac{F_x}{F_y}
+$$
+
+---
+
+## 3. Interpretación Económica
+
+El TFI permite obtener cómo varía una variable endógena sin resolver explícitamente la ecuación.
+
+Ejemplo típico: equilibrio de mercado
+
+$$E(P,a) = Q_d(P,a) - Q_s(P) = 0$$
+
+Entonces:
+
+$$
+\frac{\partial P^*}{\partial a}
+= -\frac{E_a}{E_P}
+$$
+
+Útil para:
+
+- efectos de políticas públicas  
+- shocks en parámetros  
+- análisis de sensibilidad  
+- teoría del equilibrio  
+
+---
+
+## 4. Extensión a n Variables
+
+En un sistema de \(n\) ecuaciones:
+
+$$
+E_i(P_1, \dots, P_n) = 0
+$$
+
+existe una solución local \(P_i^*\) como función de parámetros si:
+
+$$
+\det(\mathbf{J}) \neq 0
+$$
+
+donde \(\mathbf{J}\) es la matriz jacobiana:
+
+$$
+J_{ij} = \frac{\partial E_i}{\partial P_j}
+$$
+
+Esto conecta con:
+
+- equilibrio general walrasiano  
+- modelos macro (IS-LM, AD-AS)  
+- estabilidad local  
+
+---
+
+## 5. Ejemplo Económico
+
+Sea:
+
+$$F(P, a) = P^2 + 2P - a = 0$$
+
+Derivadas:
+
+- $(F_P = 2P + 2$)
+- $(F_a = -1)$
+
+Por el TFI:
+
+$$
+\frac{\partial P^*}{\partial a}
+=
+-\frac{F_a}{F_P}
+=
+\frac{1}{2P^* + 2}
+$$
+
+Interpretación:  
+Un aumento en \(a\) incrementa el precio de equilibrio, y la magnitud depende de la curvatura.
+
+---
+
+## 6. Conexiones
+
+- [[Estática Comparativa]]  
+- [[Multiplicador Keynesiano]]  
+- [[Equilibrio General Walrasiano]]  
+- [[Funciones de Reacción]]  
+- [[Curvas IS y LM]]  
+
+---
+
+## 7. Ejercicio
+
+Dado:
+
+$$F(P, b) = a - bP - P^2 = 0$$
+
+Usa el TFI para encontrar:
+
+$$\frac{\partial P^*}{\partial b}$$
+
+Solución:
+
+- $(F_b = -P)$  
+- $(F_P = -(b + 2P))$
+
+Entonces:
+
+$$
+\frac{\partial P^*}{\partial b}
+= -\frac{F_b}{F_P}
+= \frac{P}{b + 2P}
+$$

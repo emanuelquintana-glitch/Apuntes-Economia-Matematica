@@ -1,0 +1,278 @@
+
+El **análisis dinámico** estudia cómo cambian las variables económicas a lo largo del tiempo y cómo un sistema evoluciona hacia (o se aleja de) un equilibrio. Mientras que el análisis estático identifica un punto de equilibrio, el análisis dinámico se enfoca en:
+
+- la **trayectoria temporal**,  
+- la **velocidad de ajuste**,  
+- la **estabilidad o inestabilidad**,  
+- y la **respuesta ante perturbaciones**.
+
+Es un pilar central en microeconomía, macroeconomía, teoría del crecimiento, modelos DSGE, y sistemas de control económico.
+
+---
+
+## 1. Conceptos Fundamentales
+
+### 1.1 Variables Dinámicas
+Una variable es dinámica si depende del tiempo:
+
+$$x = x(t)$$  
+$$P(t),\ Y(t),\ K(t),\ N(t),\ \pi(t),\ C(t)$$
+
+### 1.2 Estado del Sistema
+El estado viene dado por un conjunto de variables cuyo valor actual determina la evolución futura.
+
+Ejemplo:
+
+$$\mathbf{x}(t) = (K(t),\ L(t),\ A(t))$$
+
+### 1.3 Ley de Movimiento
+Es la ecuación que rige el cambio temporal:
+
+$$
+\dot{x}(t) = \frac{dx(t)}{dt} = f(x(t), t)
+$$
+O en tiempo discreto:
+
+$$
+x_{t+1} = g(x_t)
+$$
+
+---
+
+## 2. Dinámica en Tiempo Continuo
+
+### 2.1 Ecuaciones Diferenciales
+
+Una ecuación económica típica:
+
+$$
+\dot{P}(t) = \alpha (Q_d(P) - Q_s(P))
+$$
+
+El parámetro $(\alpha>0)$ controla la velocidad de ajuste.
+
+### 2.2 Equilibrio Dinámico
+
+Un punto $(P^*$) es un equilibrio si:
+
+$$
+\dot{P}(t) = 0
+\Rightarrow Q_d(P^*) = Q_s(P^*)
+$$
+
+### 2.3 Estabilidad
+
+Llamamos **estable** a un equilibrio si ante una perturbación pequeña el sistema vuelve a él.
+
+Criterio local:
+
+$$
+\left.\frac{d\dot{P}}{dP}\right|_{P=P^*} < 0
+\quad \text{→ equilibrio estable}
+$$
+
+$$
+\left.\frac{d\dot{P}}{dP}\right|_{P=P^*} > 0
+\quad \text{→ equilibrio inestable}
+$$
+
+---
+
+## 3. Dinámica en Tiempo Discreto
+
+### 3.1 Ecuación de Recurrencia
+
+$$
+x_{t+1} = F(x_t)
+$$
+
+Ejemplo macroeconómico:
+
+$$
+K_{t+1} = (1 - \delta)K_t + I_t
+$$
+
+### 3.2 Equilibrio
+
+$$
+x_{t+1} = x_t = x^* \Rightarrow x^* = F(x^*)
+$$
+
+### 3.3 Estabilidad
+
+Criterio:
+
+$$
+|F'(x^*)| < 1 \quad \text{→ estable}
+$$
+$$
+|F'(x^*)| > 1 \quad \text{→ inestable}
+$$
+
+---
+
+## 4. Métodos de Análisis
+
+### 4.1 Linealización
+
+Para sistemas no lineales:
+
+$$
+\dot{x} = f(x)
+$$
+
+Se linealiza alrededor del equilibrio \(x^*\):
+
+$$
+\dot{x} \approx f'(x^*)(x - x^*)
+$$
+
+Base del análisis IS-LM lineal, curvas Phillips ampliadas, modelos DSGE lineales.
+
+---
+
+### 4.2 Matrices Jacobianas (para sistemas multivariables)
+
+Un sistema:
+
+$$
+\dot{\mathbf{x}} = \mathbf{F}(\mathbf{x})
+$$
+
+Tiene jacobiana:
+
+$$
+J_{ij} = \frac{\partial F_i}{\partial x_j}
+$$
+
+La estabilidad viene dada por los **autovalores** de \(J\):
+
+- Re$(\lambda)$ < 0 → estable  
+- Re$(\lambda$) > 0 → inestable
+
+---
+
+### 4.3 Soluciones por Fases (Phase Diagrams)
+
+Permiten estudiar:
+
+- puntos fijos  
+- direcciones de movimiento  
+- senderos de convergencia  
+- trayectorias explosivas  
+
+Fundamental en:
+
+- Modelo de Solow  
+- IS-LM dinámico  
+- Tobin q  
+- Ramsey-Cass-Koopmans  
+
+---
+
+## 5. Ejemplos Económicos Importantes
+
+### 5.1 Ajuste de Precios tipo Walras
+
+$$
+\dot{P} = \alpha (Q_d(P) - Q_s(P))
+$$
+
+Interpretación:
+
+- precios suben si hay exceso de demanda  
+- precios bajan si hay exceso de oferta  
+
+---
+
+### 5.2 Modelo de Solow
+
+$$
+\dot{k} = s f(k) - (\delta + n + g)k
+$$
+
+Equilibrio estacionario:
+
+$$
+k^* = \frac{s f(k)}{\delta + n + g}
+$$
+
+Estabilidad:
+
+$$
+f'(k^*) < \delta + n + g
+$$
+
+---
+
+### 5.3 Modelo IS-LM Dinámico
+
+Dos ecuaciones de ajuste:
+
+$$\dot{Y} = \alpha (I(r) - S(Y))$$
+
+$$
+\dot{r} = \beta (L(Y,r) - M/P)
+$$
+
+Estabilidad = signo de los autovalores de la jacobiana.
+
+---
+
+## 6. Estabilidad Global vs Local
+
+- **Local:** comportamiento cerca del equilibrio.  
+- **Global:** comportamiento desde cualquier punto del espacio de estados.
+
+Ejemplo:
+
+Un equilibrio puede ser localmente estable pero globalmente inestable.
+
+---
+
+## 7. Análisis Dinámico y Política Económica
+
+El análisis dinámico permite evaluar:
+
+- senderos de transición (no solo equilibrios finales)  
+- velocidad de ajuste de políticas  
+- persistencia de shocks  
+- ciclos económicos  
+- estabilidad financiera  
+
+Ejemplos:
+
+- efectos de un aumento en \(G_0\) en IS-LM dinámico  
+- transición en Solow ante un cambio en \(s\)  
+- convergencia en modelos neoclásicos  
+
+---
+
+## 8. Conexiones con Otros Temas
+
+Relación directa con:
+
+- [[Estática Comparativa]]  
+- [[Teorema de la Función Implícita]]  
+- [[Equilibrio General Walrasiano]]  
+- [[Modelos DSGE]]  
+- [[Teoría del Crecimiento]]  
+- [[Economía Matemática Avanzada]]  
+
+---
+
+## 9. Ejercicios Propuestos
+
+1. Para  $\dot{P} = \alpha (a - bP - cP)$
+   determina $(P^*)$ y su estabilidad.
+
+2. En el modelo discreto  $x_{t+1} = 0.5 x_t + 4$ determina si el equilibrio es estable.
+
+3. Linealiza el sistema de Solow alrededor de $(k^*)$.
+
+4. Determina los autovalores de la jacobiana del sistema IS-LM dinámico simple.
+
+5. Grafica (con Python o R) la trayectoria de un sistema estable y otro inestable.
+
+---
+

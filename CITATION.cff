@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "Por favor, cite este trabajo si lo usas en tu investigación."
+title: "Apuntes de Microeconomía Intermedia: Basado en Nicholson & Snyder (11ª Edición)"
+authors:
+  - family-names: Quintana Silva
+    given-names: Emanuel
+    orcid: "https://orcid.org/0009-0006-8419-2805"
+    affiliation: "Universidad Pedagógica y Tecnológica de Colombia (UPTC)"
+    email: "emanuel.quintana@uptc.edu.co"
+type: book
+license: CC-BY-NC-SA-4.0
+repository-code: "https://github.com/emanuelquintana-glitch/apuntes-microeconomia"
+date-released: "2024-12-10"
+abstract: "Apuntes académicos interactivos y computacionales basados en el texto clásico de microeconomía intermedia de Nicholson y Snyder, con implementaciones en Python, R y Julia."
+keywords:
+  - microeconomics
+  - economics
+  - computational-economics
+  - econometrics
+  - education
+  - python
+  - r
+  - julia
+  - quarto

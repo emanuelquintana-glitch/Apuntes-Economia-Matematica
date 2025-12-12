@@ -1,0 +1,29 @@
+{
+  "alwaysUpdateLinks": true,
+  "pdfExportSettings": {
+    "pageSize": "letter",
+    "landscape": false,
+    "margin": "2",
+    "downscalePercent": 100
+  },
+  "showLineNumber": true,
+  "spellcheck": true,
+  "foldHeading": true,
+  "foldIndent": true,
+  "showFrontmatter": true,
+  "showUnsupportedFiles": true,
+  "userIgnoreFilters": null,
+  "attachmentFolderPath": "./assets",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00 - Inbox",
+  "trashOption": "local",
+  "defaultViewMode": "source",
+  "legacyEditor": false,
+  "livePreview": true,
+  "smartIndentList": true,
+  "rightToLeft": false,
+  "readableLineLength": true,
+  "tabSize": 2,
+  "showIndentGuide": true,
+  "vimMode": false
+}

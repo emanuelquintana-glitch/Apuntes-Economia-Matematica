@@ -1,0 +1,159 @@
+project:
+  type: book
+  output-dir: output
+  render:
+    - "microeconomia-intermedia.pdf"
+    - "microeconomia-intermedia.html"
+
+book:
+  title: "Apuntes de Microeconomía Intermedia"
+  subtitle: "Basado en Nicholson & Snyder (11ª Edición)"
+  author: 
+    - name: "Emanuel Quintana Silva"
+      affiliation: "Universidad Pedagógica y Tecnológica de Colombia (UPTC)"
+      email: "emanuel.quintana@uptc.edu.co"
+      orcid: "0009-0006-8419-2805"
+  date: today
+  date-format: "long"
+  lang: es
+  page-layout: fullpage
+  
+  chapters:
+    - part: "Material Preliminar"
+      chapters:
+        - manuscript/frontmatter/00-titlepage.qmd
+        - manuscript/frontmatter/01-copyright.qmd
+        - manuscript/frontmatter/02-dedication.qmd
+        - manuscript/frontmatter/03-preface.qmd
+        - manuscript/frontmatter/04-acknowledgments.qmd
+        - manuscript/frontmatter/05-contents.qmd
+    
+    - part: "Parte I: Introducción"
+      chapters:
+        - manuscript/chapters/01-introduccion.qmd
+        - manuscript/chapters/02-modelos-economicos.qmd
+    
+    - part: "Parte II: Teoría del Consumidor"
+      chapters:
+        - manuscript/chapters/03-preferencias-utilidad.qmd
+        - manuscript/chapters/04-maximizacion-utilidad.qmd
+        - manuscript/chapters/05-demanda-individual-mercado.qmd
+        - manuscript/chapters/06-aplicaciones-demanda.qmd
+    
+    - part: "Parte III: Teoría de la Producción y Costos"
+      chapters:
+        - manuscript/chapters/07-produccion.qmd
+        - manuscript/chapters/08-costos.qmd
+        - manuscript/chapters/09-maximizacion-beneficios.qmd
+    
+    - part: "Parte IV: Estructuras de Mercado"
+      chapters:
+        - manuscript/chapters/10-competencia-perfecta.qmd
+        - manuscript/chapters/11-monopolio.qmd
+        - manuscript/chapters/12-competencia-imperfecta.qmd
+    
+    - part: "Parte V: Temas Avanzados"
+      chapters:
+        - manuscript/chapters/13-incertidumbre.qmd
+        - manuscript/chapters/14-juegos.qmd
+        - manuscript/chapters/15-informacion-asimetrica.qmd
+        - manuscript/chapters/16-economia-comportamental.qmd
+        - manuscript/chapters/17-economia-tiempo.qmd
+    
+    - part: "Apéndices"
+      chapters:
+        - manuscript/appendices/appendix-a.qmd
+        - manuscript/appendices/appendix-b.qmd
+    
+    - part: "Material Complementario"
+      chapters:
+        - manuscript/backmatter/references.bib
+        - manuscript/backmatter/glossary.qmd
+        - manuscript/backmatter/index.qmd
+
+format:
+  pdf:
+    documentclass: book
+    papersize: letter
+    fontsize: 11pt
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1.25in
+      - right=1.25in
+    linestretch: 1.25
+    include-in-header:
+      - text: |
+          \usepackage{amsmath, amssymb, amsthm}
+          \usepackage{booktabs}
+          \usepackage{graphicx}
+          \usepackage{hyperref}
+          \hypersetup{colorlinks=true, linkcolor=blue, citecolor=green, filecolor=magenta, urlcolor=cyan}
+          \usepackage{cleveref}
+          \usepackage{microtype}
+          \usepackage{multirow}
+          \usepackage{array}
+          \usepackage{longtable}
+          \usepackage[spanish]{babel}
+          \usepackage[utf8]{inputenc}
+          \usepackage[T1]{fontenc}
+          
+          % Teoremas con cajas de colores
+          \usepackage{tcolorbox}
+          \tcbuselibrary{theorems, skins, breakable}
+          
+          \newtcbtheorem[number within=chapter]{teorema}{Teorema}{
+            colback=blue!5!white,
+            colframe=blue!75!black,
+            fonttitle=\bfseries,
+            breakable,
+            enhanced
+          }{th}
+          
+          \newtcbtheorem[number within=chapter]{definicion}{Definición}{
+            colback=green!5!white,
+            colframe=green!50!black,
+            fonttitle=\bfseries,
+            breakable,
+            enhanced
+          }{def}
+          
+          \newtcbtheorem[number within=chapter]{ejemplo}{Ejemplo}{
+            colback=yellow!5!white,
+            colframe=yellow!50!black,
+            fonttitle=\bfseries,
+            breakable,
+            enhanced
+          }{ej}
+          
+          \newtcbtheorem[number within=chapter]{aplicacion}{Aplicación}{
+            colback=orange!5!white,
+            colframe=orange!75!black,
+            fonttitle=\bfseries,
+            breakable,
+            enhanced
+          }{app}
+  
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    highlight-style: pygments
+
+crossref:
+  chapters: true
+  sections: true
+  figs: true
+  tbls: true
+  eqs: true
+  thms: true
+  lsts: true
+
+execute:
+  freeze: auto
+  cache: true
+  warning: false
+  error: false
+  engine: julia  # Puedes cambiar a python o R según prefieras

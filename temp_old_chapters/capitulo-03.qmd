@@ -1,0 +1,240 @@
+---
+title: "Capítulo 3 — Análisis Estático (Equilibrio)"
+created: 2025-12-10
+tags:
+  - equilibrio
+  - microeconomia
+  - modelos
+  - macroeconomia
+  - analisis-estatico
+summary: "Estudio riguroso del equilibrio económico en modelos de mercado, sistemas interdependientes y análisis de ingreso nacional."
+---
+
+# <span style="color:#1E88E5; font-size:34px; font-weight:800;">Capítulo 3 — Análisis Estático y Condiciones de Equilibrio</span>
+
+<div style="color:#424242; font-size:16px; margin-top:-10px;">
+<span style="font-weight:600;">Curso:</span> Análisis Económico  
+<br>
+<span style="font-weight:600;">Estilo:</span> Libro Académico Azul Profesional  
+</div>
+
+-----
+
+# <span style="color:#1E88E5; font-size:26px; font-weight:800;">Introducción General</span>
+
+El análisis estático constituye uno de los pilares fundamentales de la teoría económica formal. Su objetivo es determinar los valores de las variables endógenas que satisfacen simultáneamente las **condiciones de equilibrio** del modelo.
+
+El equilibrio describe un estado donde **no existen fuerzas internas que impulsen cambios adicionales**.
+
+Este capítulo aborda:
+
+  * Concepto formal de equilibrio  
+  * Equilibrio parcial (mercado individual)  
+  * Equilibrio general (múltiples mercados)  
+  * Aplicación a macroeconomía (modelo keynesiano)  
+  * Condiciones matemáticas y restricciones económicas  
+
+-----
+
+# <span style="color:#1E88E5; font-size:24px; font-weight:700;">1. El Significado de Equilibrio Económico</span>
+
+## <span style="color:#1E88E5; font-weight:700;">1.1 Definición Formal</span>
+
+<div style="border: 2px solid #1E88E5; padding: 14px; border-radius: 8px; background:#E3F2FD;">
+<span style="color:#1E88E5; font-weight:700;">Definición (Equilibrio Económico):</span><br>
+Un sistema económico se encuentra en equilibrio cuando el conjunto de variables endógenas alcanza valores tales que, dadas sus relaciones funcionales, <strong>no existe tendencia interna al cambio</strong>.  
+</div>
+
+-----
+
+## <span style="color:#1E88E5; font-weight:700;">1.2 La Condición Matemática de Reposo</span>
+
+En términos de derivadas temporales, una variable \(Y\) está en reposo si:
+
+$$
+\frac{dY}{dt} = 0
+$$
+
+Esto contrasta con el [[Análisis Dinámico]], donde $(\frac{dY}{dt} \neq 0)$.
+
+-----
+
+# <span style="color:#1E88E5; font-size:24px; font-weight:700;">2. Equilibrio de Mercado Parcial (Un Bien)</span>
+
+El equilibrio para un bien aislado ocurre cuando la **función de exceso de demanda** (\(E\)) es cero:
+
+$$
+E(P) = Q_d(P) - Q_s(P) = 0
+$$
+
+-----
+
+## <span style="color:#1E88E5; font-weight:700;">2.1 Modelo Lineal de Oferta y Demanda</span>
+
+Supongamos:
+
+$$
+Q_d = a - \beta P \quad \text{(Demanda)}
+$$
+$$
+Q_s = -\gamma + \delta P \quad \text{(Oferta)}
+$$
+
+con $(\beta, \delta > 0$).
+
+### Condición y Solución de Equilibrio
+
+La condición de equilibrio $(Q_d = Q_s$) nos lleva a:
+
+  * **Precio de equilibrio $(P^*)$:**
+
+$$
+P^* = \frac{a + \gamma}{\beta + \delta}
+$$
+
+  * **Cantidad de equilibrio ($(Q^*$)):**
+
+$$
+Q^* = \frac{a\delta - \beta\gamma}{\beta + \delta}
+$$
+
+<div style="background:#FFF3CD; border:2px solid #FFD54F; padding:14px; border-radius:8px;">
+<span style="color:#F9A825; font-weight:700;">Restricción de Validez:</span><br>
+
+Para que $(Q^* > 0$) (condición económica necesaria):
+
+a\delta > \beta\gamma$
+
+</div>
+
+-----
+
+### **2.1.1. Ejemplo de Resolución con Python**
+
+```python
+# Módulo para resolución simbólica de ecuaciones
+import sympy
+from sympy import symbols, solve
+
+# Definición de símbolos
+P = symbols('P')
+
+# Parámetros del modelo (Ejemplo numérico)
+a = 150  # Intercepto de demanda
+beta = 5  # Pendiente de demanda
+gamma = 10  # Intercepto de oferta
+delta = 2  # Pendiente de oferta
+
+# Definición de funciones de Oferta y Demanda
+Qd = a - beta * P
+Qs = -gamma + delta * P
+
+# Ecuación de Equilibrio (Qd - Qs = 0)
+ecuacion_equilibrio = sympy.Eq(Qd, Qs)
+
+# Resolver para P (Precio de Equilibrio)
+P_estrella = solve(ecuacion_equilibrio, P)[0]
+Q_estrella = Qd.subs(P, P_estrella)
+
+print(f"Ecuación a resolver: {ecuacion_equilibrio}")
+print(f"Precio de Equilibrio (P*): {P_estrella}")
+print(f"Cantidad de Equilibrio (Q*): {Q_estrella}")
+```
+## **2.2 Modelo No Lineal**
+
+Ejemplo de equilibrio no lineal (función cuadrática):
+
+$$E(P) = P^2 + 4P - 5 = 0$$
+
+Aplicando la fórmula cuadrática:
+
+$$
+P = \frac{-4 \pm \sqrt{16 + 20}}{2} 
+= \frac{-4 \pm 6}{2}
+$$
+
+Valores:
+
+- $P_1 = 1$
+- $P_2 = -5$ (descartado por no ser económico)
+
+---
+
+## **3. Equilibrio General de Mercado (n Bienes)**
+
+Para $n$ bienes, tenemos un sistema de ecuaciones simultáneas:
+
+$$
+E_i = Q_{di}(P_1,\dots,P_n) - Q_{si}(P_1,\dots,P_n) = 0
+$$
+
+Sistema vectorial:
+
+$$
+\mathbf{E}(\mathbf{P}) = 0
+$$
+
+### **3.1 Existencia y Unicidad (Matriz Jacobiana)**
+
+> **Condición de Unicidad Local:**  
+> El determinante de la matriz jacobiana debe ser distinto de cero.
+
+$$
+\det(\mathbf{J}) \neq 0
+$$
+
+$$
+\mathbf{J} =
+\begin{pmatrix}
+\frac{\partial E_1}{\partial P_1} & \cdots & \frac{\partial E_1}{\partial P_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial E_n}{\partial P_1} & \cdots & \frac{\partial E_n}{\partial P_n}
+\end{pmatrix}
+$$
+
+---
+
+## **4. Equilibrio en el Análisis de Ingreso Nacional (Macroeconomía)**
+
+Modelo keynesiano básico:
+
+$$Y = C + I_0 + G_0$$
+$$C = a + bY$$
+
+Sustituyendo en la identidad de equilibrio:
+
+$$
+Y(1 - b) = a + I_0 + G_0
+$$
+
+Solución:
+
+$$
+Y^* = \frac{1}{1 - b}(a + I_0 + G_0)
+$$
+
+Consumo de equilibrio:
+
+$$
+C^* = a + bY^*
+$$
+
+> **Multiplicador keynesiano:**  
+> $$\frac{1}{1 - b}$$  
+> Condición: \(0 < b < 1\).
+
+---
+
+## **5. Conexiones y Profundización (Estudio Activo)**
+
+### **5.1 Conexiones Esenciales**
+
+- [[Estática Comparativa]]
+- [[Teorema de la Función Implícita]]
+- [[Multiplicador en Modelos Cerrados]]
+
+### **5.2 Tareas Pendientes**
+
+- Derivar $\frac{\partial P^*}{\partial a}$
+- Resolver sistema $2 \times 2$ de equilibrio general
+- Analizar estabilidad del equilibrio dinámico

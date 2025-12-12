@@ -1,0 +1,97 @@
+# Prefacio
+
+## Bienvenida
+
+Bienvenidos a los **Apuntes de Economía Matemática**. Este trabajo representa 
+un esfuerzo integral por presentar de manera clara, rigurosa y aplicada los 
+fundamentos matemáticos que sustentan la teoría económica moderna.
+
+## Objetivos del Libro
+
+1. **Proporcionar herramientas matemáticas** esenciales para el análisis económico
+2. **Conectar teoría con aplicaciones** mediante ejemplos concretos y estudios de caso
+3. **Fomentar el pensamiento crítico** mediante problemas y ejercicios desafiantes
+4. **Preparar al lector** para cursos avanzados en economía cuantitativa
+5. **Desarrollar intuición económica** junto con rigor matemático
+
+## Estructura del Contenido
+
+### Parte I: Fundamentos Matemáticos
+- Optimización estática y dinámica
+- Álgebra lineal aplicada a problemas económicos
+- Cálculo diferencial e integral en contextos económicos
+- Teoría de conjuntos y espacios métricos
+
+### Parte II: Teoría Económica
+- Teoría del consumidor y demanda
+- Teoría de la producción y oferta
+- Equilibrio general y bienestar
+- Fallos de mercado y regulación
+
+### Parte III: Temas Avanzados
+- Economía dinámica y optimalidad intertemporal
+- Teoría de juegos y comportamiento estratégico
+- Econometría básica e inferencia causal
+- Finanzas matemáticas
+
+## Características Pedagógicas
+
+### Ejemplos Resueltos
+Cada concepto teórico se ilustra con aplicaciones económicas concretas, 
+mostrando paso a paso el proceso de solución.
+
+### Ejercicios Propuestos
+Al final de cada capítulo se incluyen ejercicios de diferentes niveles de 
+dificultad, desde problemas básicos hasta desafíos avanzados.
+
+### Notas Históricas
+Contexto sobre el desarrollo de las ideas y contribuciones de economistas 
+y matemáticos clave.
+
+### Recuadros de Aplicación
+Casos del mundo real que muestran la relevancia práctica de los conceptos teóricos.
+
+### Visualizaciones Interactivas
+Gráficos y diagramas que ayudan a comprender conceptos abstractos.
+
+## Agradecimientos
+
+Este trabajo no habría sido posible sin el apoyo y contribuciones de numerosas 
+personas e instituciones. Agradezco especialmente:
+
+- A mis profesores por su guía y mentoria
+- A mis estudiantes por sus preguntas desafiantes
+- A la comunidad académica por su constante feedback
+- A mi familia por su apoyo incondicional
+
+## Cómo Usar Este Libro
+
+### Para Estudiantes
+- Leer secuencialmente los capítulos
+- Resolver activamente todos los ejercicios
+- Consultar los apéndices para repaso matemático
+- Formar grupos de estudio para discusión
+
+### Para Instructores
+- El material está diseñado para un curso semestral
+- Los ejercicios varían en dificultad para adaptarse a diferentes niveles
+- Se proporcionan soluciones detalladas para instructores
+- Flexibilidad para enfatizar diferentes áreas según el curso
+
+## Recursos Adicionales
+
+- **Sitio web del libro**: [URL] (con material complementario)
+- **Repositorio de código**: [GitHub URL] (con scripts y datos)
+- **Foro de discusión**: [URL] (para preguntas y respuestas)
+- **Actualizaciones**: Suscríbete para recibir correcciones y nuevo material
+
+## Comentarios y Sugerencias
+
+Tu feedback es invaluable. Por favor, envía tus comentarios, correcciones 
+y sugerencias a: [correo electrónico]
+
+---
+
+*Emanuel Quintana*  
+*Economista e Investigador*  
+*Diciembre de 2024*

@@ -1,0 +1,17 @@
+{
+  "showDotFiles": true,
+  "showUnderscoreFiles": true,
+  "hiddenExtensions": [],
+  "hiddenFolders": [".git"],
+  "hiddenFiles": [],
+  "folders": [
+    {
+      "path": "/",
+      "showDotFiles": true,
+      "showUnderscoreFiles": true,
+      "hiddenExtensions": [],
+      "hiddenFolders": [".git"],
+      "hiddenFiles": []
+    }
+  ]
+}

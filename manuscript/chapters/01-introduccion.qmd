@@ -1,0 +1,565 @@
+---
+title: "Capítulo 1: Una Visión General de la Microeconomía"
+subtitle: "Fundamentos, Propósitos y Métodos del Análisis Económico"
+author: "Emanuel Quintana Silva"
+date: today
+abstract: |
+  Este capítulo establece los cimientos conceptuales y metodológicos de la teoría microeconómica,
+  explorando sus categorías básicas, propósitos fundamentales y el arte de construir modelos económicos.
+  Basado en Nicholson & Snyder (11ª Edición).
+jupyter: python3
+---
+
+# Capítulo 1: Una Visión General de la Microeconomía
+
+```python
+#| label: setup
+#| include: false
+# Configuración inicial
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import pandas as pd
+import sympy as sp
+from sympy import symbols, Eq, solve, diff
+import networkx as nx
+import warnings
+warnings.filterwarnings('ignore')
+
+# Configurar estilo de gráficos
+plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['figure.figsize'] = (10, 6)
+plt.rcParams['font.size'] = 12
+plt.rcParams['axes.titlesize'] = 16
+plt.rcParams['axes.labelsize'] = 14
+
+# Colores para categorías
+colors = {
+    'actores': '#3498db',
+    'comportamiento': '#2ecc71', 
+    'instituciones': '#e74c3c',
+    'equilibrio': '#f39c12'
+}
+```
+## 1.0 Introducción: ¿Por qué Estudiar Microeconomía?
+```python
+#| label: fig-microeconomia-importancia
+#| fig-cap: "La microeconomía en la vida diaria: aplicaciones y relevancia"
+#| fig-alt: "Diagrama que muestra cómo la microeconomía afecta decisiones diarias"
+
+# Crear diagrama de aplicaciones
+fig, ax = plt.subplots(figsize=(12, 8))
+
+# Definir posiciones para el diagrama
+applications = {
+    'Decisiones del\nConsumidor': (0.2, 0.8),
+    'Producción y\nCostos': (0.8, 0.8),
+    'Estructuras\nde Mercado': (0.2, 0.4),
+    'Políticas\nPúblicas': (0.8, 0.4),
+    'Teoría de\nJuegos': (0.5, 0.2)
+}
+
+# Nodo central
+ax.scatter([0.5], [0.6], s=3000, color=colors['equilibrio'], alpha=0.3, edgecolors='black', linewidth=2)
+ax.text(0.5, 0.6, 'MICROECONOMÍA', ha='center', va='center', fontsize=16, fontweight='bold')
+
+# Aplicaciones
+for app, (x, y) in applications.items():
+    ax.scatter([x], [y], s=2000, color='#95a5a6', alpha=0.7, edgecolors='black', linewidth=1)
+    ax.text(x, y, app, ha='center', va='center', fontsize=12, fontweight='bold')
+    # Conectar con centro
+    ax.plot([0.5, x], [0.6, y], 'k-', alpha=0.3, linewidth=2)
+
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.axis('off')
+ax.set_title('Aplicaciones de la Microeconomía en la Vida Real', fontsize=18, fontweight='bold', pad=20)
+
+plt.tight_layout()
+plt.show()
+```
+
+**La microeconomía no es solo teoría abstracta** – es la lógica detrás de cada decisión económica que tomamos. Desde elegir qué comprar en el supermercado hasta diseñar políticas públicas que afectan a millones, la microeconomía proporciona las herramientas para entender y predecir el comportamiento económico.
+```tex
+\begin{definicion}{Microeconomía}{microeconomia}
+La \textbf{microeconomía} es la rama de la economía que estudia el comportamiento de unidades económicas individuales (consumidores, empresas, trabajadores) y cómo sus decisiones interactúan en distintos mercados e instituciones. Se enfoca en:
+\begin{itemize}
+    \item Toma de decisiones bajo restricciones
+    \item Formación de precios en mercados específicos  
+    \item Asignación eficiente de recursos escasos
+    \item Interacciones estratégicas entre agentes
+\end{itemize}
+\end{definicion}
+```
+## 1.1 Las Cuatro Categorías Fundamentales de la Teoría Microeconómica
+
+La teoría microeconómica se estructura alrededor de cuatro pilares conceptuales. Vamos a explorarlos en detalle:
+
+### 1.1.1 Los Actores: ¿Quiénes toman decisiones?
+```python
+#| label: fig-maximizacion-restringida
+#| fig-cap: "El principio de maximización restringida en economía"
+#| fig-alt: "Visualización 3D de maximización con restricciones"
+
+from mpl_toolkits.mplot3d import Axes3D
+
+# Crear datos para superficie de utilidad
+x = np.linspace(0, 10, 50)
+y = np.linspace(0, 10, 50)
+X, Y = np.meshgrid(x, y)
+
+# Función de utilidad Cobb-Douglas
+U = X**0.5 * Y**0.5
+
+# Restricción presupuestaria: 2X + 3Y = 30
+def restriccion_presupuestaria(x):
+    return (30 - 2*x) / 3
+
+fig = plt.figure(figsize=(15, 6))
+
+# Gráfico 3D
+ax1 = fig.add_subplot(121, projection='3d')
+surf = ax1.plot_surface(X, Y, U, cmap='viridis', alpha=0.8, edgecolor='none')
+ax1.set_xlabel('Bien X', labelpad=10)
+ax1.set_ylabel('Bien Y', labelpad=10)
+ax1.set_zlabel('Utilidad U(X,Y)', labelpad=10)
+ax1.set_title('Superficie de Utilidad', fontsize=14, fontweight='bold')
+
+# Agregar restricción presupuestaria
+x_line = np.linspace(0, 10, 100)
+y_line = restriccion_presupuestaria(x_line)
+valid = y_line >= 0
+x_line = x_line[valid]
+y_line = y_line[valid]
+z_line = x_line**0.5 * y_line**0.5
+ax1.plot(x_line, y_line, z_line, 'r-', linewidth=3, label='Restricción presupuestaria')
+
+# Punto óptimo (solución analítica)
+x_opt = 7.5
+y_opt = 5.0
+z_opt = x_opt**0.5 * y_opt**0.5
+ax1.scatter([x_opt], [y_opt], [z_opt], color='red', s=100, label='Óptimo')
+
+ax1.legend()
+ax1.view_init(elev=20, azim=45)
+
+# Gráfico 2D: curvas de indiferencia
+ax2 = fig.add_subplot(122)
+# Curvas de indiferencia
+levels = [2, 3, 4, 5, 6]
+CS = ax2.contour(X, Y, U, levels=levels, colors='blue', alpha=0.6, linewidths=2)
+ax2.clabel(CS, inline=1, fontsize=10)
+
+# Restricción presupuestaria
+ax2.plot(x_line, y_line, 'r-', linewidth=3, label='Restricción: 2X + 3Y = 30')
+ax2.fill_between(x_line, 0, y_line, alpha=0.2, color='red')
+
+# Punto óptimo
+ax2.scatter([x_opt], [y_opt], color='red', s=100, zorder=5)
+ax2.text(x_opt+0.3, y_opt, f'Óptimo\n({x_opt}, {y_opt})', fontsize=10, 
+         bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+
+ax2.set_xlabel('Cantidad del Bien X', fontsize=12)
+ax2.set_ylabel('Cantidad del Bien Y', fontsize=12)
+ax2.set_title('Maximización de Utilidad Restringida', fontsize=14, fontweight='bold')
+ax2.grid(True, alpha=0.3)
+ax2.legend()
+ax2.set_xlim(0, 10)
+ax2.set_ylim(0, 10)
+
+plt.suptitle('El Comportamiento Económico: Maximización Restringida', fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.show()
+```
+
+**Modelo "Como Si"**
+Los modelos de maximización no pretenden describir **procesos mentales reales** de los agentes, sino que asumen que estos actúan **como si** estuvieran maximizando. Esta aproximación es válida porque:
+
+1. **Predicciones acertadas**: Aunque las personas no calculen derivadas, sus decisiones se aproximan a las de un maximizador
+2. **Selección evolutiva**: En mercados competitivos, sobreviven quienes actúan como maximizadores
+3. **Sencillez analítica**: Permite usar herramientas matemáticas poderosas
+
+**Ejemplo**: Un consumidor no resuelve ecuaciones de Lagrange al comprar pan, pero su patrón de compras puede modelarse exitosamente como si lo hiciera.
+
+### 1.1.3 El Marco Institucional: Las Reglas del Juego
+```tex
+\begin{definicion}{Marco Institucional}{marco-institucional}
+El \textbf{marco institucional} en economía se refiere al conjunto de reglas, normas, 
+estructuras organizativas y mecanismos de coordinación que definen:
+\begin{itemize}
+    \item Las opciones disponibles para los agentes económicos
+    \item La información a la que tienen acceso
+    \item Los incentivos que enfrentan
+    \item Cómo se determinan los resultados en función de las acciones individuales
+    \item Los derechos de propiedad y mecanismos de transferencia
+\end{itemize}
+En esencia, el marco institucional son "las reglas del juego" económico.
+\end{definicion}
+```
+#### Fundamentos Conceptuales del Marco Institucional
+
+El análisis microeconómico tradicional se ha centrado predominantemente en un marco institucional específico: **el mecanismo de precios en mercados competitivos**. Sin embargo, la economía moderna reconoce una diversidad mucho más amplia de arreglos institucionales, cada uno con propiedades distintas y consecuencias diferentes para la eficiencia y distribución.
+
+## Análisis Comparativo de Tres Marcos Institucionales Clave
+
+Para comprender cómo el marco institucional afecta los resultados económicos, contrastaremos tres estructuras fundamentales: **el mercado competitivo**, **el monopolio** y **las subastas**. Cada una representa un "diseño de reglas del juego" distinto que genera patrones de comportamiento, eficiencia y distribución del bienestar específicos.
+
+### 1. Mercado Competitivo: La Mano Invisible en Acción
+
+#### Definición Conceptual
+Un **mercado competitivo** es una estructura institucional caracterizada por la presencia de:
+- **Muchos compradores y vendedores** (ninguno con poder de mercado significativo)
+- **Productos homogéneos** (perfectamente sustituibles)
+- **Información perfecta y simétrica** (todos conocen precios y características)
+- **Libre entrada y salida** (sin barreras significativas)
+- **Movilidad perfecta de factores** (recursos se asignan libremente)
+
+En este marco, los agentes son *price-takers*: aceptan el precio de mercado como dado y ajustan sus cantidades.
+
+#### Características Estructurales Detalladas
+
+| Dimensión Institucional | Descripción | Implicación Económica |
+|------------------------|-------------|----------------------|
+| **Número de participantes** | Gran cantidad de compradores y vendedores | El precio se determina por fuerzas agregadas de mercado, no por decisiones individuales |
+| **Diferenciación del producto** | Homogéneo o perfectamente sustituible | La competencia se basa exclusivamente en precio, no en características del producto |
+| **Barreras de entrada/salida** | Nulas o insignificantes | Los beneficios económicos tienden a cero en el largo plazo (solo beneficios normales) |
+| **Disponibilidad de información** | Perfecta, completa y simétrica | Los agentes toman decisiones óptimas basadas en información completa |
+| **Poder de mercado individual** | Cero o insignificante | Cada agente es demasiado pequeño para afectar el precio de mercado |
+| **Mecanismo de formación de precios** | Impersonal, resultado de oferta y demanda | El precio actúa como señal de escasez relativa y mecanismo de racionamiento |
+
+#### Mecanismo de Formación de Precios
+
+El proceso de ajuste al equilibrio competitivo sigue una **dinámica walrasiana**:
+
+1. **Desequilibrio inicial**: A un precio arbitrario $P_0$, la cantidad demandada $Q_d(P_0)$ difiere de la cantidad ofrecida $Q_s(P_0)$
+   
+2. **Proceso de *tâtonnement***:
+   - Si $Q_d(P_0) > Q_s(P_0)$ → Exceso de demanda → Subasta sube el precio
+   - Si $Q_d(P_0) < Q_s(P_0)$ → Exceso de oferta → Subasta baja el precio
+   
+3. **Convergencia al equilibrio**: $P^*$ tal que $Q_d(P^*) = Q_s(P^*)$
+
+#### Eficiencia y Bienestar
+
+**Teorema Fundamental del Bienestar (Primer Teorema):**
+> Bajo condiciones ideales de competencia perfecta, cualquier equilibrio competitivo es **Pareto-eficiente**.
+
+**Condiciones para la eficiencia:**
+1. **Maximización individual**: Cada consumidor maximiza utilidad sujeto a restricción presupuestaria
+2. **Maximización de beneficios**: Cada productor maximiza beneficios dados precios y tecnología
+3. **Clearing de mercados**: Oferta igual a demanda en todos los mercados
+4. **Ausencia de externalidades**: Todas las consecuencias de las acciones se internalizan
+
+**Medición del bienestar social:**
+
+- **Excedente del consumidor (EC)**: Diferencia entre lo que los consumidores están dispuestos a pagar y lo que realmente pagan
+  $$
+  EC = \int_{0}^{Q^*} [P_d(Q) - P^*] dQ
+  $$
+
+- **Excedente del productor (EP)**: Diferencia entre lo que reciben los productores y su costo marginal
+  $$
+  EP = \int_{0}^{Q^*} [P^* - P_s(Q)] dQ
+  $$
+
+- **Excedente total (ET)**: $ET = EC + EP$ → **Máximo en competencia perfecta**
+
+#### Limitaciones y Críticas
+
+1. **Supuestos irreales**:
+   - Información perfecta raramente existe
+   - Productos raramente son perfectamente homogéneos
+   - Barreras de entrada frecuentemente presentes
+
+2. **Fallos de mercado** que requieren intervención:
+   - Externalidades (positivas y negativas)
+   - Bienes públicos
+   - Información asimétrica
+   - Poder de mercado
+
+3. **Equidad vs. Eficiencia**: La eficiencia paretiana no considera distribución inicial
+
+---
+
+### 2. Monopolio: Poder de Mercado Concentrado
+
+#### Definición Conceptual
+Un **monopolio** es una estructura de mercado donde:
+- **Un único vendedor** controla toda la oferta del mercado
+- **No existen sustitutos cercanos** para el producto
+- **Barreras significativas de entrada** impiden la competencia
+- **El monopolista tiene control sobre el precio** (es un *price-maker*)
+
+#### Tipología de Monopolios
+
+| Tipo | Causa | Ejemplo |
+|------|-------|---------|
+| **Monopolio natural** | Economías de escala extremas que hacen ineficiente la competencia | Servicios de utilidad pública (agua, electricidad) |
+| **Monopolio legal** | Concesión estatal de derechos exclusivos | Patentes, derechos de autor, licencias |
+| **Monopolio por recursos** | Control exclusivo de un recurso esencial | De Beers (diamantes), OPEP (petróleo históricamente) |
+| **Monopolio tecnológico** | Ventaja tecnológica insuperable | Microsoft en sistemas operativos (1990s) |
+
+#### Comportamiento del Monopolista
+
+**Problema de maximización:**
+$$
+\max_{Q} \pi(Q) = P(Q) \cdot Q - C(Q)
+$$
+
+**Condición de primer orden:**
+$$
+\frac{d\pi}{dQ} = P'(Q)Q + P(Q) - C'(Q) = 0
+$$
+
+**Regla de fijación de precios (Regla de Lerner):**
+$$
+\frac{P - CMg}{P} = \frac{1}{|\epsilon_D|}
+$$
+
+Donde:
+- $P$: Precio cobrado por el monopolista
+- $CMg$: Costo marginal
+- $\epsilon_D$: Elasticidad-precio de la demanda (en valor absoluto)
+
+**Implicaciones de la regla de Lerner:**
+
+1. **Margen sobre costo**: El monopolista cobra un margen sobre el costo marginal
+2. **Relación con elasticidad**: Margen mayor cuando demanda es más inelástica
+3. **Límite inferior**: $|\epsilon_D| > 1$ en el punto óptimo (si no, ingreso marginal negativo)
+
+#### Ineficiencia y Pérdida de Bienestar
+
+**Comparación con competencia perfecta:**
+
+| Variable | Competencia Perfecta | Monopolio | Consecuencia |
+|----------|---------------------|-----------|--------------|
+| **Precio** | $P = CMg$ | $P > CMg$ | Transferencia de excedente |
+| **Cantidad** | $Q_c$ (óptima social) | $Q_m < Q_c$ | Reducción producción |
+| **Excedente consumidor** | Máximo | Reducido | Pérdida para consumidores |
+| **Excedente productor** | Normal | Aumentado | Ganancia para monopolista |
+| **Excedente total** | Máximo | Reducido | **Pérdida irrecuperable de eficiencia** |
+
+**Cálculo de la pérdida de bienestar (Deadweight Loss):**
+$$
+DWL = \int_{Q_m}^{Q_c} [P_d(Q) - CMg(Q)] dQ
+$$
+
+**Gráficamente**: Área triangular entre cantidad monopolística y competitiva, bajo la curva de demanda y sobre el costo marginal.
+
+#### Regulación de Monopolios
+
+**Enfoques regulatorios:**
+
+1. **Regulación de precios**:
+   - **Precio = Costo marginal**: Recupera eficiencia pero puede causar pérdidas
+   - **Precio = Costo medio**: Permite beneficio normal pero mantiene ineficiencia
+   
+2. **Subsidios**: Compensar pérdidas cuando $P = CMg < CMe$
+   
+3. **Propiedad pública**: Operación estatal directa
+   
+4. **Promoción de competencia**: Eliminación de barreras artificiales
+
+**Problemas de regulación:**
+- **Información asimétrica**: Regulador no conoce costos reales
+- **Captura regulatoria**: Agencias cooptadas por las empresas
+- **Costos de administración**: Burocracia y supervisión costosas
+
+---
+
+### 3. Subastas: Asignación por Mecanismos de Revelación
+
+#### Definición Conceptual
+Una **subasta** es un mecanismo institucional para:
+- **Asignar bienes** cuando no hay un precio de mercado establecido
+- **Revelar valoraciones** privadas de los compradores
+- **Determinar precios** a través de competencia estratégica
+- **Maximizar ingresos** del vendedor (en muchos casos)
+
+#### Clasificación de Subastas
+
+| Dimensión | Tipos | Características |
+|-----------|-------|-----------------|
+| **Forma de puja** | Abierta vs. Cerrada | Pujas públicas vs. secretas |
+| **Regla de precio** | Primero precio vs. Segundo precio | Gana mayor puja vs. paga segunda mayor |
+| **Dirección** | Ascendente vs. Descendente | Precio sube vs. precio baja |
+| **Valoración** | Valor privado vs. Valor común | Valor individual vs. valor objetivo |
+
+#### Formatos Clásicos de Subasta
+
+1. **Subasta inglesa (ascendente)**:
+   - Pujas públicas y ascendentes
+   - Gana quien ofrece el precio más alto
+   - Paga el precio final de su puja
+   - **Estrategia óptima**: Pujar hasta el valor propio
+
+2. **Subasta holandesa (descendente)**:
+   - Precio comienza alto y desciende
+   - Primer postor en aceptar gana
+   - Paga el precio en el momento de aceptar
+   - **Estrategia óptima**: Más compleja, depende de valoraciones
+
+3. **Subasta de primer precio sellado**:
+   - Pujas secretas simultáneas
+   - Gana la puja más alta
+   - Paga el monto de su propia puja
+   - **Estrategia óptima**: Pujar por debajo del valor real
+
+4. **Subasta de segundo precio (Vickrey)**:
+   - Pujas secretas simultáneas
+   - Gana la puja más alta
+   - Paga el monto de la **segunda** puja más alta
+   - **Estrategia óptima**: **Pujar el valor verdadero** (estrategia dominante)
+
+#### Teorema de la Equivalencia de los Ingresos
+
+**Teorema (Vickrey, 1961):**
+
+
+> Bajo ciertas condiciones (valoraciones independientes privadas, agentes neutrales al riesgo, información simétrica), los cuatro formatos básicos de subasta generan **ingresos esperados iguales** para el vendedor.
+
+**Condiciones del teorema:**
+- Valoraciones independientes e idénticamente distribuidas
+- Agentes neutrales al riesgo
+- Información simétrica sobre distribuciones
+- Sin efectos colusivos o estratégicos
+
+#### Ventajas de los Mecanismos de Subasta
+
+1. **Eficiencia allocativa**: El bien va al agente que más lo valora
+2. **Revelación de información**: Las pujas revelan valoraciones privadas
+3. **Simplicidad procedimental**: Reglas claras y transparentes
+4. **Flexibilidad**: Adaptable a diferentes contextos y bienes
+5. **Maximización de ingresos**: En muchos casos, supera precios fijos
+
+#### Aplicaciones Prácticas
+
+**Sector público:**
+- Espectro radioeléctrico (miles de millones en ingresos)
+- Concesiones de recursos naturales
+- Contratación pública
+
+**Sector privado:**
+- Arte y antigüedades
+- Propiedades inmobiliarias
+- Subastas online (eBay, etc.)
+- Google AdWords (subasta de palabras clave)
+
+**Finanzas:**
+- Letras del Tesoro
+- Bonos gubernamentales
+- Mercados de electricidad
+
+---
+
+### Tabla Comparativa Sintética
+
+| Dimensión | Mercado Competitivo | Monopolio | Subasta |
+|-----------|---------------------|-----------|---------|
+| **Número de vendedores** | Muchos | Uno | Uno (o pocos) |
+| **Poder de fijación de precios** | Ninguno (price-taker) | Completo (price-maker) | Competitivo/estratégico |
+| **Mecanismo de precio** | Oferta y demanda impersonal | Decisión unilateral | Competencia entre compradores |
+| **Eficiencia allocativa** | Máxima (bajo supuestos) | Reducida (DWL) | Alta (bien va a mayor valoración) |
+| **Excedente consumidor** | Alto | Bajo | Variable (depende del formato) |
+| **Excedente productor/vendedor** | Normal (beneficio cero LP) | Alto | Maximizado (en teoría) |
+| **Requisitos de información** | Precios conocidos por todos | Información sobre demanda | Valoraciones privadas |
+| **Problemas principales** | Fallos de mercado, externalidades | Poder de mercado, DWL | Colusión, mal diseño |
+| **Contextos típicos** | Bienes estandarizados, mercados líquidos | Bienes únicos, monopolios naturales | Bienes heterogéneos, valor subjetivo |
+| **Intervención necesaria** | Corrección de fallos de mercado | Regulación de precios, promoción competencia | Diseño adecuado del mecanismo |
+
+---
+
+### Selección del Marco Institucional Óptimo
+
+La elección entre estos marcos institucionales (y otros) depende de **características específicas del bien o servicio**:
+
+#### Factores Determinantes
+
+1. **Naturaleza del bien**:
+   - **Bienes privados estandarizados** → Mercados competitivos
+   - **Recursos escasos únicos** → Subastas
+   - **Monopolios naturales** → Regulación o propiedad pública
+
+2. **Características de la demanda**:
+   - **Demanda masiva y estable** → Mercados
+   - **Valoraciones heterogéneas/subjetivas** → Subastas
+   - **Demanda inelástica** → Riesgo de poder de mercado
+
+3. **Estructura de costos**:
+   - **Economías de escala limitadas** → Competencia
+   - **Economías de escala extremas** → Regulación de monopolio
+   - **Costos hundidos altos** → Barreras a la entrada
+
+4. **Información disponible**:
+   - **Información simétrica** → Mercados competitivos
+   - **Información asimétrica** → Mecanismos de revelación (subastas)
+   - **Información privada** → Diseño de incentivos
+
+#### Principio de Diseño Institucional
+
+> El marco institucional óptimo minimiza la suma de:
+> 1. **Costos de transacción** (búsqueda, negociación, ejecución)
+> 2. **Costos de agencia** (alineación de incentivos)
+> 3. **Pérdidas por ineficiencia** (DWL, asignación subóptima)
+> 4. **Costos de implementación** (diseño, monitoreo, cumplimiento)
+
+#### Ejemplos de Aplicación en el Mundo Real
+
+**Petróleo crudo**:
+- **Extracción**: Concesiones por subasta (derechos de exploración)
+- **Refinación**: Mercados competitivos con cierta regulación
+- **Distribución minorista**: Competencia oligopólica
+
+**Electricidad**:
+- **Generación**: Mercado competitivo (en muchos países)
+- **Transmisión**: Monopolio natural regulado
+- **Distribución**: Monopolio regional regulado
+
+**Frecuencias de radio**:
+- **Asignación inicial**: Subastas espectro (miles de millones)
+- **Uso secundario**: Mercados de derechos
+
+
+La microeconomía se define como **el estudio de la asignación de recursos escasos entre usos alternativos**. Más específicamente, **la teoría microeconómica concierne el comportamiento de los actores económicos individuales y la agregación de sus acciones en diferentes marcos institucionales**. Es **el estudio de todas las elecciones que los individuos y las empresas hacen y de qué tan bien los resultados del mercado satisfacen las necesidades humanas básicas**.
+
+El propósito central de la microeconomía es lograr **una mejor comprensión de la actividad y los resultados económicos**. Los modelos simples que construye la microeconomía buscan describir las características básicas de los mercados y pueden ser utilizados para analizar problemas complejos.
+
+### Categorías Fundamentales de la Teoría Microeconómica
+
+La teoría microeconómica se organiza tradicionalmente alrededor de cuatro categorías básicas:
+
+1. **El actor individual:** Tradicionalmente puede ser **un consumidor o una empresa**.
+2. **El comportamiento:** Tradicionalmente se enfoca en **la maximización de la utilidad por parte de los consumidores y la maximización de beneficios por parte de las empresas**.
+3. **El marco institucional:** Describe las opciones disponibles para los actores individuales y los resultados que reciben en función de las acciones de otros.
+4. **El modo de análisis:** Se utiliza para modelar cómo se agrega el comportamiento de los diversos actores dentro de un marco dado, siendo tradicionalmente **el análisis de equilibrio**.
+
+### Usos de la Microeconomía
+
+La microeconomía ofrece diversas aplicaciones prácticas, ya que ayuda a **comprender las fuerzas del mercado** que afectan la vida diaria:
+
+- **Para individuos:** Un entendimiento de cómo funcionan los mercados puede ayudar a **tomar decisiones** sobre futuras carreras, compras mayores o decisiones financieras importantes.
+- **Para empresas:** Las firmas usan las herramientas microeconómicas para **comprender la naturaleza de la demanda** de su producto y los **costos** que incurren.
+- **Para política gubernamental:** Los principios microeconómicos se usan para **evaluar si ciertas leyes y regulaciones contribuyen o restan valor al bienestar general**. El estudio de la economía ayuda a **analizar los argumentos económicos**, que a menudo se oscurecen por la retórica política.
+
+Una de las áreas de enfoque de la microeconomía es el análisis de **situaciones competitivas**, y un curso avanzado en la materia incluye énfasis en el uso de la teoría de juegos no cooperativos, transacciones con información privada y la teoría de las empresas e instituciones no mercantiles.
+
+En resumen, la microeconomía se centra en las elecciones individuales y la forma en que estas elecciones se combinan para determinar los resultados del mercado, proporcionando **una base para entender cómo se asignan los recursos escasos**....
+
+
+La microeconomía se fundamenta en **unos pocos principios básicos**. Estos principios, a menudo ilustrados mediante el modelo de la frontera de posibilidades de producción, son:
+
+1. **Escasez de recursos:** Los recursos son escasos, lo que implica que algunas combinaciones de bienes son imposibles de producir.
+2. **Costo de Oportunidad:** La escasez conlleva costos de oportunidad, donde producir más de un bien necesariamente implica producir menos de algo más. El costo de oportunidad de un bien se define como **los usos alternativos que se renuncian al producirlo**.
+3. **Costos de Oportunidad Crecientes:** El costo de oportunidad de una acción económica **no es constante**, sino que generalmente aumenta a medida que la producción se expande debido al principio de **rendimientos decrecientes**,.
+4. **Los Incentivos Importan (Marginalismo):** Al tomar decisiones económicas, las personas consideran los costos de oportunidad. Solo se tomará una acción si los beneficios adicionales (marginales) superan los costos de oportunidad adicionales (marginales).
+5. **La Ineficiencia Implica Costos Reales:** Una economía que opera dentro de su frontera de posibilidades de producción es **ineficiente**. Evitar tales ineficiencias conlleva **costos de oportunidad reales** y hará que las personas estén mejor.
+6. **La Importancia de los Mercados:** Si los mercados funcionan bien, mejoran el bienestar general. Si funcionan mal, pueden imponer **costos reales** a la economía al causar que se opere de manera ineficiente.
+
+### Categorías Estructurales de la Teoría Microeconómica
+
+Estos principios se implementan a través del estudio del comportamiento de actores que se agrupan en cuatro categorías fundamentales:
+
+- **El actor individual:** Tradicionalmente un consumidor o una empresa.
+- **El comportamiento:** Se asume la maximización, como **la maximización de la utilidad por parte de los consumidores** y **la maximización de beneficios por parte de las empresas**,.
+- **El marco institucional:** Describe las opciones disponibles para los actores y los resultados que reciben, siendo el mecanismo de precios un ejemplo tradicional,.
+- **El equilibrio:** El modo de análisis utilizado para modelar la agregación de las acciones de los actores,.
