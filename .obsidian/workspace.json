@@ -184,13 +184,40 @@
               "icon": "git-pull-request",
               "title": "Source Control"
             }
+          },
+          {
+            "id": "d8b8a5f6387296f3",
+            "type": "leaf",
+            "state": {
+              "type": "r-environment-view",
+              "state": {},
+              "icon": "table",
+              "title": "R Environment"
+            }
           }
         ],
-        "currentTab": 6
+        "currentTab": 7
+      },
+      {
+        "id": "df87766080b2bb77",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bcbf36c32b85d5d6",
+            "type": "leaf",
+            "state": {
+              "type": "r-help-view",
+              "state": {},
+              "icon": "info",
+              "title": "R Help"
+            }
+          }
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -217,8 +244,11 @@
   },
   "active": "ade96a59cfb73799",
   "lastOpenFiles": [
-    "Excalidraw/Drawing 2025-12-10 23.09.36.excalidraw.md",
+    "exports/01-introduccion_qmd/01-introduccion_qmd_quarto.qmd",
+    "exports/01-introduccion_qmd",
+    "exports",
     "manuscript/chapters/01-introduccion.qmd",
+    "Excalidraw/Drawing 2025-12-10 23.09.36.excalidraw.md",
     "README.md",
     "Sin título.base",
     "Untitled Kanban.md",
@@ -229,8 +259,6 @@
     "📁 Configuración",
     "Sin título 1.base",
     "temp_old_chapters/chapter-08.qmd",
-    "manuscript/appendices/appendix-a.qmd",
-    "manuscript/chapters/17-economia-tiempo.qmd",
     "03 - Capítulo 3 - Análisis Estático.md.md",
     "Análisis Dinámico.md",
     "Estática Comparativa.md",

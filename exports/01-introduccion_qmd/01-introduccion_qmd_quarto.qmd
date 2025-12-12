@@ -1,0 +1,970 @@
+---
+title: "01-introduccion"
+author: "Author Name"
+date: today
+format: html
+---
+
+
+---
+title: "Una Visión General de la Microeconomía"
+subtitle: "Fundamentos, Propósitos y Métodos del Análisis Económico"
+author: "Emanuel Quintana Silva"
+date: today
+bibliography: ../backmatter/references.bib
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: true
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    fig-width: 10
+    fig-height: 6
+  pdf:
+    documentclass: article
+    geometry: margin=1in
+    number-sections: true
+    toc: true
+jupyter: python3
+---
+
+::: {.callout-note icon=false}
+## Resumen del Capítulo
+
+Este capítulo establece los cimientos conceptuales y metodológicos de la teoría microeconómica, explorando sus categorías básicas, propósitos fundamentales y el arte de construir modelos económicos. Basado en @nicholson2012microeconomic [11ª Edición].
+:::
+
+```python
+#| label: setup
+#| include: false
+
+# Configuración inicial
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from mpl_toolkits.mplot3d import Axes3D
+import pandas as pd
+import sympy as sp
+from sympy import symbols, Eq, solve, diff, latex
+import networkx as nx
+import warnings
+warnings.filterwarnings('ignore')
+
+# Configurar estilo de gráficos
+plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['figure.figsize'] = (12, 8)
+plt.rcParams['font.size'] = 11
+plt.rcParams['axes.titlesize'] = 16
+plt.rcParams['axes.labelsize'] = 13
+plt.rcParams['legend.fontsize'] = 10
+plt.rcParams['xtick.labelsize'] = 10
+plt.rcParams['ytick.labelsize'] = 10
+
+# Colores para categorías conceptuales
+colors = {
+    'actores': '#3498db',
+    'comportamiento': '#2ecc71', 
+    'instituciones': '#e74c3c',
+    'equilibrio': '#f39c12',
+    'eficiencia': '#9b59b6',
+    'bienestar': '#1abc9c'
+}
+```
+
+# Introducción: ¿Por qué Estudiar Microeconomía?
+
+La microeconomía no es simplemente teoría abstracta confinada a las aulas universitarias. Es la **lógica fundamental** detrás de cada decisión económica que enfrentamos diariamente. Desde las elecciones más cotidianas —como qué productos comprar en el supermercado o cómo distribuir nuestro tiempo entre trabajo y ocio— hasta las decisiones de política pública que afectan a millones de personas, la microeconomía proporciona las herramientas analíticas para entender, predecir y optimizar el comportamiento económico.
+
+```python
+#| label: fig-microeconomia-importancia
+#| fig-cap: "La microeconomía en la vida diaria: aplicaciones y relevancia práctica"
+#| fig-alt: "Diagrama conceptual mostrando las aplicaciones de la microeconomía"
+
+# Crear diagrama de aplicaciones con NetworkX
+fig, ax = plt.subplots(figsize=(14, 10))
+
+# Crear grafo
+G = nx.Graph()
+
+# Nodo central
+centro = "MICROECONOMÍA"
+G.add_node(centro)
+
+# Aplicaciones principales
+aplicaciones = {
+    'Decisiones del\nConsumidor': 'Elección óptima de bienes\ny servicios',
+    'Producción y\nCostos': 'Eficiencia productiva\ny escalas óptimas',
+    'Estructuras\nde Mercado': 'Competencia, monopolio\ny oligopolio',
+    'Políticas\nPúblicas': 'Impuestos, subsidios\ny regulación',
+    'Teoría de\nJuegos': 'Interacciones estratégicas\ny cooperación',
+    'Información\nAsimétrica': 'Selección adversa\ny riesgo moral'
+}
+
+# Agregar nodos y aristas
+for app, desc in aplicaciones.items():
+    G.add_node(app)
+    G.add_edge(centro, app)
+
+# Layout circular
+pos = nx.spring_layout(G, k=2, iterations=50)
+pos[centro] = np.array([0, 0])  # Centro en el origen
+
+# Dibujar nodos
+nx.draw_networkx_nodes(G, pos, nodelist=[centro], 
+                       node_color=colors['equilibrio'], 
+                       node_size=8000, alpha=0.9, 
+                       edgecolors='black', linewidths=3, ax=ax)
+
+nx.draw_networkx_nodes(G, pos, nodelist=list(aplicaciones.keys()), 
+                       node_color=colors['actores'], 
+                       node_size=5000, alpha=0.8, 
+                       edgecolors='black', linewidths=2, ax=ax)
+
+# Dibujar aristas
+nx.draw_networkx_edges(G, pos, width=2.5, alpha=0.4, 
+                       edge_color='gray', ax=ax)
+
+# Etiquetas principales
+nx.draw_networkx_labels(G, pos, 
+                       labels={centro: centro},
+                       font_size=16, font_weight='bold', ax=ax)
+
+# Etiquetas de aplicaciones
+for node, (x, y) in pos.items():
+    if node != centro:
+        ax.text(x, y, node, ha='center', va='center', 
+               fontsize=11, fontweight='bold', 
+               bbox=dict(boxstyle='round,pad=0.3', 
+                        facecolor='white', alpha=0.8))
+
+ax.set_xlim(-1.5, 1.5)
+ax.set_ylim(-1.5, 1.5)
+ax.axis('off')
+ax.set_title('Aplicaciones de la Microeconomía en el Mundo Real', 
+            fontsize=18, fontweight='bold', pad=20)
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip icon=true}
+## Definición: Microeconomía
+
+La **microeconomía** es la rama de la economía que estudia el comportamiento de unidades económicas individuales (consumidores, empresas, trabajadores, inversores) y cómo sus decisiones interactúan en distintos mercados e instituciones. 
+
+**Se enfoca en:**
+
+- **Toma de decisiones bajo restricciones**: Cómo los agentes optimizan dado recursos limitados
+- **Formación de precios**: Mecanismos de determinación de precios en mercados específicos  
+- **Asignación eficiente**: Distribución óptima de recursos escasos entre usos alternativos
+- **Interacciones estratégicas**: Cómo las decisiones de un agente afectan a otros
+:::
+
+## Relevancia Contemporánea
+
+En la era de la economía digital, la inteligencia artificial y los mercados globalizados, la microeconomía adquiere relevancia renovada:
+
+1. **Plataformas digitales**: Comprender efectos de red y economías de escala en empresas como Amazon, Uber o Airbnb
+2. **Diseño de mercados**: Subastas de espectro radioeléctrico, asignación de órganos para trasplante, matching en mercados laborales
+3. **Economía del comportamiento**: Incorporación de insights psicológicos para diseñar mejores políticas públicas
+4. **Cambio climático**: Análisis de externalidades, impuestos pigouvianos y mercados de carbono
+
+# Las Cuatro Categorías Fundamentales de la Teoría Microeconómica {#sec-categorias}
+
+La teoría microeconómica moderna se estructura alrededor de **cuatro pilares conceptuales fundamentales** que proporcionan el andamiaje analítico de la disciplina:
+
+```python
+#| label: fig-categorias-fundacionales
+#| fig-cap: "Las cuatro categorías estructurales de la teoría microeconómica"
+#| fig-alt: "Diagrama de las categorías fundamentales"
+
+fig, ax = plt.subplots(figsize=(14, 10))
+
+categorias = {
+    '1. ACTORES': {
+        'pos': (0.25, 0.75),
+        'color': colors['actores'],
+        'elementos': [
+            '• Consumidores',
+            '• Empresas',
+            '• Trabajadores',
+            '• Inversores',
+            '• Gobierno'
+        ]
+    },
+    '2. COMPORTAMIENTO': {
+        'pos': (0.75, 0.75),
+        'color': colors['comportamiento'],
+        'elementos': [
+            '• Maximización utilidad',
+            '• Maximización beneficios',
+            '• Racionalidad (acotada)',
+            '• Preferencias reveladas',
+            '• Modelos "como si"'
+        ]
+    },
+    '3. INSTITUCIONES': {
+        'pos': (0.25, 0.25),
+        'color': colors['instituciones'],
+        'elementos': [
+            '• Mercados competitivos',
+            '• Monopolio/Oligopolio',
+            '• Subastas',
+            '• Regulación',
+            '• Contratos'
+        ]
+    },
+    '4. EQUILIBRIO': {
+        'pos': (0.75, 0.25),
+        'color': colors['equilibrio'],
+        'elementos': [
+            '• Equilibrio parcial',
+            '• Equilibrio general',
+            '• Nash equilibrio',
+            '• Equilibrio bayesiano',
+            '• Estabilidad'
+        ]
+    }
+}
+
+# Dibujar cajas
+for titulo, info in categorias.items():
+    x, y = info['pos']
+    
+    # Caja principal
+    rect = plt.Rectangle((x-0.2, y-0.2), 0.4, 0.35, 
+                         facecolor=info['color'], 
+                         edgecolor='black', 
+                         linewidth=2.5, 
+                         alpha=0.3)
+    ax.add_patch(rect)
+    
+    # Título
+    ax.text(x, y+0.12, titulo, 
+           ha='center', va='center',
+           fontsize=14, fontweight='bold',
+           bbox=dict(boxstyle='round,pad=0.5', 
+                    facecolor='white', 
+                    edgecolor='black',
+                    linewidth=2))
+    
+    # Elementos
+    y_offset = 0.05
+    for elemento in info['elementos']:
+        ax.text(x-0.15, y+y_offset, elemento, 
+               ha='left', va='top',
+               fontsize=9)
+        y_offset -= 0.05
+
+# Conectar categorías
+connections = [
+    ((0.25, 0.75), (0.75, 0.75)),  # Actores <-> Comportamiento
+    ((0.25, 0.75), (0.25, 0.25)),  # Actores <-> Instituciones
+    ((0.75, 0.75), (0.75, 0.25)),  # Comportamiento <-> Equilibrio
+    ((0.25, 0.25), (0.75, 0.25)),  # Instituciones <-> Equilibrio
+    ((0.25, 0.75), (0.75, 0.25)),  # Actores <-> Equilibrio (diagonal)
+    ((0.75, 0.75), (0.25, 0.25)),  # Comportamiento <-> Instituciones (diagonal)
+]
+
+for (x1, y1), (x2, y2) in connections:
+    ax.plot([x1, x2], [y1, y2], 'k--', alpha=0.2, linewidth=1.5)
+
+# Anotación central
+ax.text(0.5, 0.5, 'INTEGRACIÓN\nSISTÉMICA', 
+       ha='center', va='center',
+       fontsize=13, fontweight='bold', style='italic',
+       bbox=dict(boxstyle='round,pad=0.7', 
+                facecolor=colors['bienestar'], 
+                alpha=0.2,
+                edgecolor='black',
+                linewidth=2))
+
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.axis('off')
+ax.set_title('Estructura Conceptual de la Teoría Microeconómica', 
+            fontsize=18, fontweight='bold', pad=20)
+
+plt.tight_layout()
+plt.show()
+```
+
+## Los Actores: ¿Quiénes Toman Decisiones? {#sec-actores}
+
+Los **actores económicos** son las unidades fundamentales de análisis en microeconomía. Tradicionalmente, la teoría se ha centrado en dos tipos principales:
+
+### Consumidores (Hogares)
+
+Los consumidores enfrentan el problema de **maximizar su bienestar** (utilidad) sujeto a restricciones presupuestarias. Formalmente:
+
+$$
+\max_{x_1, x_2, \ldots, x_n} U(x_1, x_2, \ldots, x_n)
+$$ {#eq-max-utilidad}
+
+sujeto a:
+
+$$
+\sum_{i=1}^{n} p_i x_i \leq I
+$$ {#eq-restriccion-presupuestaria}
+
+donde:
+
+- $U(\cdot)$ es la función de utilidad
+- $x_i$ son las cantidades consumidas del bien $i$
+- $p_i$ son los precios
+- $I$ es el ingreso disponible
+
+### Empresas (Firmas)
+
+Las empresas buscan **maximizar beneficios** dada su tecnología de producción y los precios de mercado:
+
+$$
+\max_{q} \pi(q) = R(q) - C(q)
+$$ {#eq-max-beneficios}
+
+donde:
+
+- $\pi(q)$ son los beneficios
+- $R(q) = p \cdot q$ son los ingresos totales
+- $C(q)$ son los costos totales de producir $q$ unidades
+
+### Expansión del Concepto de Actor
+
+La microeconomía moderna ha ampliado significativamente el concepto de actor económico para incluir:
+
+- **Trabajadores**: Que optimizan su oferta de trabajo vs. ocio
+- **Inversores**: Que maximizan rendimiento ajustado por riesgo
+- **Gobierno**: Como actor que puede maximizar bienestar social
+- **Organizaciones sin fines de lucro**: Con funciones objetivo alternativas
+- **Agentes con racionalidad limitada**: Incorporando insights de economía del comportamiento
+
+## El Comportamiento: ¿Cómo Deciden los Actores? {#sec-comportamiento}
+
+El supuesto central del comportamiento económico es la **maximización racional** bajo restricciones. Sin embargo, esta aparente simplicidad esconde considerable sofisticación conceptual.
+
+### El Principio de Maximización Restringida
+
+```python
+#| label: fig-maximizacion-restringida
+#| fig-cap: "Maximización de utilidad restringida: representación gráfica 2D y 3D"
+#| fig-alt: "Visualización 3D de maximización con restricciones y curvas de indiferencia"
+#| fig-width: 15
+#| fig-height: 8
+
+# Crear datos para superficie de utilidad
+x = np.linspace(0, 12, 100)
+y = np.linspace(0, 12, 100)
+X, Y = np.meshgrid(x, y)
+
+# Función de utilidad Cobb-Douglas: U(X,Y) = X^α * Y^(1-α)
+alpha = 0.5
+U = X**alpha * Y**(1-alpha)
+
+# Parámetros de restricción presupuestaria
+p_x = 2  # Precio bien X
+p_y = 3  # Precio bien Y
+I = 30   # Ingreso
+
+# Restricción presupuestaria: p_x*X + p_y*Y = I
+def restriccion_presupuestaria(x):
+    return (I - p_x*x) / p_y
+
+# Solución analítica del óptimo
+x_opt = alpha * I / p_x
+y_opt = (1 - alpha) * I / p_y
+u_opt = x_opt**alpha * y_opt**(1-alpha)
+
+fig = plt.figure(figsize=(16, 7))
+
+# ============= GRÁFICO 3D =============
+ax1 = fig.add_subplot(121, projection='3d')
+
+# Superficie de utilidad
+surf = ax1.plot_surface(X, Y, U, cmap='viridis', alpha=0.7, 
+                       edgecolor='none', antialiased=True)
+
+# Restricción presupuestaria en 3D
+x_line = np.linspace(0, I/p_x, 200)
+y_line = restriccion_presupuestaria(x_line)
+valid = (y_line >= 0) & (x_line >= 0)
+x_line = x_line[valid]
+y_line = y_line[valid]
+z_line = x_line**alpha * y_line**(1-alpha)
+
+ax1.plot(x_line, y_line, z_line, 'r-', linewidth=4, 
+        label=f'Restricción: {p_x}X + {p_y}Y = {I}', zorder=10)
+
+# Punto óptimo
+ax1.scatter([x_opt], [y_opt], [u_opt], 
+           color='red', s=200, edgecolors='black', 
+           linewidths=2, label=f'Óptimo ({x_opt:.1f}, {y_opt:.1f})', 
+           zorder=15)
+
+# Proyección del óptimo al plano XY
+ax1.plot([x_opt, x_opt], [y_opt, y_opt], [0, u_opt], 
+        'r--', linewidth=2, alpha=0.5)
+
+ax1.set_xlabel('Bien X', labelpad=12, fontsize=12)
+ax1.set_ylabel('Bien Y', labelpad=12, fontsize=12)
+ax1.set_zlabel('Utilidad U(X,Y)', labelpad=12, fontsize=12)
+ax1.set_title('Superficie de Utilidad y Restricción Presupuestaria', 
+             fontsize=14, fontweight='bold', pad=15)
+ax1.legend(loc='upper left', fontsize=10)
+ax1.view_init(elev=25, azim=45)
+
+# Barra de color
+cbar = fig.colorbar(surf, ax=ax1, shrink=0.5, aspect=5)
+cbar.set_label('Nivel de Utilidad', fontsize=10)
+
+# ============= GRÁFICO 2D: CURVAS DE INDIFERENCIA =============
+ax2 = fig.add_subplot(122)
+
+# Curvas de indiferencia (niveles de utilidad constante)
+levels = np.linspace(2, u_opt * 1.2, 8)
+CS = ax2.contour(X, Y, U, levels=levels, colors='blue', 
+                alpha=0.6, linewidths=1.5)
+ax2.clabel(CS, inline=True, fontsize=9, fmt='U=%.1f')
+
+# Restricción presupuestaria
+x_line_2d = np.linspace(0, I/p_x, 200)
+y_line_2d = restriccion_presupuestaria(x_line_2d)
+valid_2d = y_line_2d >= 0
+x_line_2d = x_line_2d[valid_2d]
+y_line_2d = y_line_2d[valid_2d]
+
+ax2.plot(x_line_2d, y_line_2d, 'r-', linewidth=3, 
+        label=f'Restricción: {p_x}X + {p_y}Y = {I}')
+ax2.fill_between(x_line_2d, 0, y_line_2d, alpha=0.15, color='red')
+
+# Curva de indiferencia óptima (tangente)
+x_tangent = np.linspace(0, 12, 200)
+y_tangent = (u_opt / x_tangent**alpha)**(1/(1-alpha))
+valid_tangent = (y_tangent >= 0) & (y_tangent <= 12)
+x_tangent = x_tangent[valid_tangent]
+y_tangent = y_tangent[valid_tangent]
+
+ax2.plot(x_tangent, y_tangent, 'g-', linewidth=3, 
+        label=f'Curva Indiferencia Óptima (U={u_opt:.2f})', 
+        linestyle='--')
+
+# Punto óptimo
+ax2.scatter([x_opt], [y_opt], color='red', s=200, 
+           zorder=5, edgecolors='black', linewidths=2)
+ax2.annotate(f'Óptimo\n({x_opt:.1f}, {y_opt:.1f})\nU = {u_opt:.2f}', 
+            xy=(x_opt, y_opt), xytext=(x_opt+1.5, y_opt+1.5),
+            fontsize=11, fontweight='bold',
+            bbox=dict(boxstyle="round,pad=0.5", facecolor="yellow", 
+                     alpha=0.7, edgecolor='black', linewidth=1.5),
+            arrowprops=dict(arrowstyle='->', lw=2, color='black'))
+
+# Vector gradiente en el óptimo (perpendicular a la curva de indiferencia)
+grad_x = alpha * u_opt / x_opt
+grad_y = (1-alpha) * u_opt / y_opt
+scale = 0.8
+ax2.arrow(x_opt, y_opt, scale*grad_x/np.linalg.norm([grad_x, grad_y]), 
+         scale*grad_y/np.linalg.norm([grad_x, grad_y]),
+         head_width=0.3, head_length=0.3, fc='purple', 
+         ec='purple', linewidth=2, alpha=0.7,
+         label='∇U (Gradiente)')
+
+ax2.set_xlabel('Cantidad del Bien X', fontsize=13)
+ax2.set_ylabel('Cantidad del Bien Y', fontsize=13)
+ax2.set_title('Maximización de Utilidad con Curvas de Indiferencia', 
+             fontsize=14, fontweight='bold')
+ax2.grid(True, alpha=0.3, linestyle='--')
+ax2.legend(loc='upper right', fontsize=10)
+ax2.set_xlim(0, 12)
+ax2.set_ylim(0, 12)
+
+plt.suptitle('El Comportamiento Económico: Maximización Restringida', 
+            fontsize=17, fontweight='bold', y=0.98)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-important icon=true}
+## Condición de Tangencia en el Óptimo
+
+En el punto óptimo, la **tasa marginal de sustitución** (TMS) del consumidor debe igualar la **relación de precios**:
+
+$$
+TMS_{X,Y} = \frac{UM_X}{UM_Y} = \frac{p_X}{p_Y}
+$$ {#eq-condicion-tangencia}
+
+Esta condición refleja que el consumidor **no puede mejorar** intercambiando bienes al margen: el valor subjetivo del intercambio iguala el costo de mercado.
+:::
+
+### El Modelo "Como Si" (*As If*)
+
+Un aspecto crucial del enfoque de maximización es su naturaleza **instrumental** más que **descriptiva**:
+
+> Los modelos de maximización **no pretenden** describir procesos cognitivos reales de los agentes económicos. En cambio, asumen que los agentes actúan **"como si"** estuvieran maximizando.
+
+#### Justificaciones del Enfoque "Como Si":
+
+1. **Poder predictivo**: Aunque las personas no calculen derivadas parciales conscientemente, sus decisiones agregadas se aproximan sorprendentemente bien a las predicciones de modelos de maximización
+
+2. **Selección evolutiva**: En mercados competitivos, sobreviven (prosperan) aquellos agentes cuyo comportamiento se aproxima al de un maximizador. Los que no optimizan tienden a ser eliminados por la competencia
+
+3. **Tractabilidad analítica**: Permite el uso de herramientas matemáticas poderosas (cálculo, optimización, teoría de juegos) para derivar predicciones refutables
+
+4. **Aproximación de primer orden**: Para pequeñas desviaciones del óptimo, el comportamiento "suficientemente bueno" produce resultados similares al comportamiento óptimo
+5. 
+```Quarto
+::: {.callout-note icon=true}
+## Ejemplo: El Consumidor No Calcula Derivadas
+
+Un consumidor típico no resuelve formalmente el problema:
+
+$$
+\max_{x,y} \, x^{0.5} y^{0.5} \quad \text{s.a.} \quad 2x + 3y = 30
+$$
+
+mediante multiplicadores de Lagrange. Sin embargo, a través de **experiencia, prueba y error, e intuición**, su patrón de compras converge hacia la solución óptima $(x^* = 7.5, y^* = 5)$. 
+
+El modelo de maximización captura el **resultado** de este proceso de aprendizaje y ajuste.
+:::
+```
+### Racionalidad Limitada y Extensiones Modernas
+
+La economía del comportamiento ha documentado **desviaciones sistemáticas** de la maximización perfecta:
+
+- **Heurísticas y sesgos**: Atajos mentales que producen errores predecibles
+- **Preferencias inconsistentes en el tiempo**: Descuento hiperbólico vs. exponencial
+- **Aversión a las pérdidas**: Valoración asimétrica de ganancias y pérdidas
+- **Efectos de marco**: La presentación afecta las elecciones
+
+Estos hallazgos han enriquecido la teoría microeconómica sin abandonar el núcleo de optimización:
+
+$$
+\max_{x} U(x | \text{sesgos, heurísticas, contexto}) \quad \text{s.a. restricciones}
+$$
+
+## El Marco Institucional: Las Reglas del Juego {#sec-instituciones}
+
+::: {.callout-tip icon=true}
+## Definición: Marco Institucional
+
+El **marco institucional** en economía se refiere al conjunto de **reglas, normas, estructuras organizativas y mecanismos de coordinación** que definen:
+
+- Las **opciones disponibles** para los agentes económicos
+- La **información** a la que tienen acceso  
+- Los **incentivos** que enfrentan
+- Cómo se **determinan los resultados** en función de las acciones individuales
+- Los **derechos de propiedad** y mecanismos de transferencia
+
+**En esencia**: El marco institucional representa *"las reglas del juego"* económico.
+:::
+
+### Fundamentos Conceptuales
+
+El análisis microeconómico tradicional se ha centrado predominantemente en un marco institucional específico: el **mecanismo de precios en mercados competitivos**. Sin embargo, la economía moderna reconoce una diversidad mucho más amplia de arreglos institucionales, cada uno con propiedades distintas y consecuencias diferentes para la **eficiencia** y **distribución**.
+
+La elección del marco institucional no es neutral: determina profundamente:
+
+1. **Eficiencia allocativa**: Qué tan bien se asignan recursos a sus usos de mayor valor
+2. **Distribución del excedente**: Cómo se reparten las ganancias del intercambio entre participantes
+3. **Incentivos dinámicos**: Motivaciones para innovar, invertir y mejorar productividad
+4. **Costos de transacción**: Recursos consumidos en el proceso de intercambio mismo
+
+### Análisis Comparativo de Marcos Institucionales Clave
+
+Exploraremos en detalle tres estructuras fundamentales que ilustran la importancia del diseño institucional:
+
+#### 1. Mercado Competitivo: La Mano Invisible en Acción {#sec-mercado-competitivo}
+
+##### Definición Conceptual
+
+Un **mercado competitivo** (o de competencia perfecta) es una estructura institucional caracterizada por:
+
+| **Característica** | **Descripción** | **Implicación** |
+|:---|:---|:---|
+| **Atomicidad** | Muchos compradores y vendedores (ninguno con poder de mercado significativo) | Agentes son **price-takers** |
+| **Homogeneidad** | Productos perfectamente sustituibles | Competencia basada exclusivamente en **precio** |
+| **Información perfecta** | Todos conocen precios y características | Decisiones óptimas basadas en información completa |
+| **Libre entrada/salida** | Sin barreras significativas | Beneficios económicos → 0 en largo plazo |
+| **Movilidad de factores** | Recursos se asignan libremente | Capital y trabajo fluyen hacia usos de mayor valor |
+
+```python
+#| label: fig-equilibrio-competitivo
+#| fig-cap: "Equilibrio en un mercado competitivo: oferta, demanda y excedentes"
+#| fig-alt: "Representación gráfica del equilibrio competitivo con excedentes"
+#| fig-width: 12
+#| fig-height: 7
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7))
+
+# ========== PANEL 1: EQUILIBRIO BÁSICO ==========
+Q = np.linspace(0, 100, 300)
+
+# Curvas de oferta y demanda
+P_demand = 100 - 0.8*Q
+P_supply = 10 + 0.4*Q
+
+# Equilibrio
+Q_eq = 75
+P_eq = 100 - 0.8*Q_eq
+
+ax1.plot(Q, P_demand, 'b-', linewidth=3, label='Demanda (D)')
+ax1.plot(Q, P_supply, 'r-', linewidth=3, label='Oferta (S)')
+
+# Punto de equilibrio
+ax1.scatter([Q_eq], [P_eq], s=300, c='green', zorder=5, 
+           edgecolors='black', linewidths=2, 
+           label=f'Equilibrio (Q={Q_eq:.0f}, P={P_eq:.0f})')
+
+# Líneas de referencia
+ax1.plot([Q_eq, Q_eq], [0, P_eq], 'g--', linewidth=1.5, alpha=0.6)
+ax1.plot([0, Q_eq], [P_eq, P_eq], 'g--', linewidth=1.5, alpha=0.6)
+
+# Excedentes
+Q_fill = np.linspace(0, Q_eq, 100)
+P_d_fill = 100 - 0.8*Q_fill
+P_s_fill = 10 + 0.4*Q_fill
+
+ax1.fill_between(Q_fill, P_eq, P_d_fill, alpha=0.3, 
+                color='blue', label='Excedente Consumidor')
+ax1.fill_between(Q_fill, P_s_fill, P_eq, alpha=0.3, 
+                color='red', label='Excedente Productor')
+
+ax1.set_xlabel('Cantidad (Q)', fontsize=13)
+ax1.set_ylabel('Precio (P)', fontsize=13)
+ax1.set_title('Equilibrio Competitivo y Excedentes', 
+             fontsize=14, fontweight='bold')
+ax1.legend(loc='best', fontsize=10)
+ax1.grid(True, alpha=0.3)
+ax1.set_xlim(0, 100)
+ax1.set_ylim(0, 110)
+
+# ========== PANEL 2: AJUSTE DINÁMICO (TÂTONNEMENT) ==========
+Q_range = np.linspace(0, 100, 300)
+P_d = 100 - 0.8*Q_range
+P_s = 10 + 0.4*Q_range
+
+ax2.plot(Q_range, P_d, 'b-', linewidth=3, label='Demanda', alpha=0.7)
+ax2.plot(Q_range, P_s, 'r-', linewidth=3, label='Oferta', alpha=0.7)
+
+# Proceso de ajuste
+precios_ajuste = [70, 55, 50, 48, 46]
+for i, P_test in enumerate(precios_ajuste):
+    Q_d_test = (100 - P_test) / 0.8
+    Q_s_test = (P_test - 10) / 0.4
+    
+    color_arrow = 'orange' if i < len(precios_ajuste)-1 else 'green'
+    alpha_val = 0.4 + (i * 0.15)
+    
+    # Exceso de demanda/oferta
+    if Q_d_test > Q_s_test:  # Exceso de demanda
+        ax2.annotate('', xy=(Q_d_test, P_test), xytext=(Q_s_test, P_test),
+                    arrowprops=dict(arrowstyle='<->', lw=2, 
+                                   color=color_arrow, alpha=alpha_val))
+        ax2.text((Q_s_test + Q_d_test)/2, P_test + 2, 
+                f'Exceso Demanda\n↑ Precio', 
+                ha='center', fontsize=8, 
+                bbox=dict(boxstyle='round,pad=0.3', 
+                         facecolor='yellow', alpha=0.5))
+    
+    # Marcar puntos
+    ax2.scatter([Q_d_test], [P_test], s=80, c='blue', 
+               alpha=alpha_val, edgecolors='black', linewidths=1)
+    ax2.scatter([Q_s_test], [P_test], s=80, c='red', 
+               alpha=alpha_val, edgecolors='black', linewidths=1)
+
+# Equilibrio final
+ax2.scatter([Q_eq], [P_eq], s=300, c='green', zorder=5, 
+           edgecolors='black', linewidths=2.5, marker='*',
+           label='Equilibrio Final')
+
+ax2.set_xlabel('Cantidad (Q)', fontsize=13)
+ax2.set_ylabel('Precio (P)', fontsize=13)
+ax2.set_title('Proceso de Ajuste al Equilibrio (Tâtonnement)', 
+             fontsize=14, fontweight='bold')
+ax2.legend(loc='upper right', fontsize=10)
+ax2.grid(True, alpha=0.3)
+ax2.set_xlim(0, 100)
+ax2.set_ylim(0, 110)
+
+plt.tight_layout()
+plt.show()
+```
+
+##### Mecanismo de Formación de Precios: Proceso Walrasiano
+
+El ajuste hacia el equilibrio competitivo sigue una **dinámica de tâtonnement** (tanteo):
+
+1. **Desequilibrio inicial**: A un precio arbitrario $P_0$, la cantidad demandada $Q_D(P_0)$ difiere de la cantidad ofrecida $Q_S(P_0)$
+
+2. **Proceso de ajuste**:
+   - Si $Q_D(P_0) > Q_S(P_0)$ → **Exceso de demanda** → El precio sube
+   - Si $Q_D(P_0) < Q_S(P_0)$ → **Exceso de oferta** → El precio baja
+
+3. **Convergencia al equilibrio**: Se alcanza $P^*$ tal que $Q_D(P^*) = Q_S(P^*)$
+
+##### Eficiencia y Bienestar Social
+
+::: {.callout-important icon=true}
+## Primer Teorema Fundamental del Bienestar
+
+**Teorema**: Bajo condiciones ideales de competencia perfecta, cualquier **equilibrio competitivo es Pareto-eficiente**.
+
+**Condiciones necesarias**:
+
+1. Maximización individual (consumidores y productores)
+2. Clearing de mercados (oferta = demanda en todos los mercados)
+3. Ausencia de externalidades
+4. Información perfecta
+5. Mercados completos
+:::
+
+**Medición del bienestar social**:
+
+- **Excedente del Consumidor (EC)**: Diferencia entre disposición a pagar y precio pagado
+$
+EC = \int_0^{Q^*} P_D(q) \, dq - P^* \cdot Q^*
+$ {#eq-excedente-consumidor}
+
+- **Excedente del Productor (EP)**: Diferencia entre precio recibido y costo marginal
+$
+EP = P^* \cdot Q^* - \int_0^{Q^*} P_S(q) \, dq
+$ {#eq-excedente-productor}
+
+- **Excedente Total (ET)**:
+$
+ET = EC + EP \quad \text{(maximizado en competencia perfecta)}
+$ {#eq-excedente-total}
+
+##### Limitaciones y Fallos de Mercado
+
+| **Fallo de Mercado** | **Descripción** | **Consecuencia** |
+|:---|:---|:---|
+| **Externalidades** | Costos/beneficios no internalizados | Sobreproducción (negativas) o subproducción (positivas) |
+| **Bienes públicos** | No rivalidad y no exclusión | Provisión insuficiente por mercado privado |
+| **Información asimétrica** | Distribución desigual de información | Selección adversa, riesgo moral |
+| **Poder de mercado** | Concentración de vendedores/compradores | Precios por encima de costo marginal |
+| **Mercados incompletos** | Ausencia de mercados para ciertos bienes | Asignación ineficiente de riesgo |
+
+#### 2. Monopolio: Poder de Mercado Concentrado {#sec-monopolio}
+
+##### Definición y Tipología
+
+Un **monopolio** es una estructura de mercado donde:
+
+- Un **único vendedor** controla toda la oferta
+- **No existen sustitutos cercanos** para el producto
+- **Barreras significativas de entrada** impiden competencia
+- El monopolista es un **price-maker** (fija precios)
+
+**Tipos de monopolios**:
+
+| **Tipo** | **Causa** | **Ejemplo** |
+|:---|:---|:---|
+| **Natural** | Economías de escala extremas | Servicios públicos (agua, electricidad) |
+| **Legal** | Concesión estatal de derechos exclusivos | Patentes, derechos de autor |
+| **Por recursos** | Control exclusivo de recurso esencial | De Beers (diamantes), OPEP (históricamente) |
+| **Tecnológico** | Ventaja tecnológica insuperable | Microsoft OS (años 90), Google Search |
+
+```python
+#| label: fig-monopolio-analisis
+#| fig-cap: "Análisis del monopolio: maximización de beneficios y pérdida de bienestar"
+#| fig-alt: "Comparación gráfica entre monopolio y competencia perfecta"
+#| fig-width: 14
+#| fig-height: 7
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
+
+# ========== PANEL 1: DECISIÓN DEL MONOPOLISTA ==========
+Q = np.linspace(0, 100, 300)
+
+# Demanda inversa: P = 100 - Q
+P_demand = 100 - Q
+
+# Ingreso marginal: IM = 100 - 2Q
+IM = 100 - 2*Q
+
+# Costo marginal constante
+CM = np.full_like(Q, 20)
+
+# Cantidad y precio de monopolio
+Q_m = 40  # IM = CM → 100 - 2Q = 20 → Q = 40
+P_m = 100 - Q_m  # P = 60
+
+# Cantidad y precio competitivo
+Q_c = 80  # P = CM → 100 - Q = 20 → Q = 80
+P_c = 20
+
+ax1.plot(Q, P_demand, 'b-', linewidth=3, label='Demanda (Ingreso Medio)')
+ax1.plot(Q, IM, 'g--', linewidth=2.5, label='Ingreso Marginal (IM)')
+ax1.plot(Q, CM, 'r-', linewidth=3, label='Costo Marginal (CM)')
+
+# Punto de monopolio
+ax1.scatter([Q_m], [P_m], s=300, c='darkred', zorder=5, 
+           edgecolors='black', linewidths=2, marker='s',
+           label=f'Monopolio (Q={Q_m}, P={P_m})')
+ax1.plot([Q_m, Q_m], [0, P_m], 'k--', linewidth=1.5, alpha=0.5)
+ax1.plot([0, Q_m], [P_m, P_m], 'k--', linewidth=1.5, alpha=0.5)
+ax1.plot([Q_m, Q_m], [CM[0], P_m], 'purple', linewidth=3, 
+        label='Margen unitario')
+
+# Beneficio del monopolista (área sombreada)
+Q_profit = np.linspace(0, Q_m, 100)
+P_profit = 100 - Q_profit
+ax1.fill_between(Q_profit, CM[0], P_profit, alpha=0.3, 
+                color='purple', label='Beneficio Monopolio')
+
+# Anotaciones
+ax1.annotate('IM = CM\n(Condición óptima)', 
+            xy=(Q_m, CM[0]), xytext=(Q_m + 15, CM[0] - 10),
+            fontsize=10, fontweight='bold',
+            bbox=dict(boxstyle="round,pad=0.5", facecolor="yellow", alpha=0.7),
+            arrowprops=dict(arrowstyle='->', lw=2))
+
+ax1.set_xlabel('Cantidad (Q)', fontsize=13)
+ax1.set_ylabel('Precio / Costo', fontsize=13)
+ax1.set_title('Decisión de Maximización del Monopolista', 
+             fontsize=14, fontweight='bold')
+ax1.legend(loc='upper right', fontsize=10)
+ax1.grid(True, alpha=0.3)
+ax1.set_xlim(0, 100)
+ax1.set_ylim(0, 110)
+
+# ========== PANEL 2: PÉRDIDA DE BIENESTAR (DWL) ==========
+ax2.plot(Q, P_demand, 'b-', linewidth=3, label='Demanda')
+ax2.plot(Q, CM, 'r-', linewidth=3, label='Costo Marginal')
+
+# Monopolio
+ax2.scatter([Q_m], [P_m], s=300, c='darkred', zorder=5, 
+           edgecolors='black', linewidths=2, marker='s',
+           label=f'Monopolio')
+ax2.plot([Q_m, Q_m], [0, P_m], 'r--', linewidth=2, alpha=0.6)
+ax2.plot([0, Q_m], [P_m, P_m], 'r--', linewidth=2, alpha=0.6)
+
+# Competencia perfecta
+ax2.scatter([Q_c], [P_c], s=300, c='green', zorder=5, 
+           edgecolors='black', linewidths=2, marker='o',
+           label=f'Competencia Perfecta')
+ax2.plot([Q_c, Q_c], [0, P_c], 'g--', linewidth=2, alpha=0.6)
+ax2.plot([0, Q_c], [P_c, P_c], 'g--', linewidth=2, alpha=0.6)
+
+# Excedentes bajo monopolio
+Q_ec_m = np.linspace(0, Q_m, 100)
+P_ec_m = 100 - Q_ec_m
+ax2.fill_between(Q_ec_m, P_m, P_ec_m, alpha=0.3, 
+                color='lightblue', label='EC (Monopolio)')
+ax2.fill_between(Q_ec_m, CM[0], P_m, alpha=0.3, 
+                color='lightcoral', label='EP (Monopolio)')
+
+# Pérdida irrecuperable de eficiencia (Deadweight Loss)
+Q_dwl = np.linspace(Q_m, Q_c, 100)
+P_dwl = 100 - Q_dwl
+ax2.fill_between(Q_dwl, CM[0], P_dwl, alpha=0.5, 
+                color='gray', label='Pérdida Irrecuperable (DWL)')
+
+# Anotación DWL
+ax2.annotate('Pérdida de\nBienestar Social', 
+            xy=(60, 40), xytext=(70, 55),
+            fontsize=11, fontweight='bold', color='darkred',
+            bbox=dict(boxstyle="round,pad=0.5", facecolor="white", 
+                     edgecolor='red', linewidth=2),
+            arrowprops=dict(arrowstyle='->', lw=2, color='red'))
+
+ax2.set_xlabel('Cantidad (Q)', fontsize=13)
+ax2.set_ylabel('Precio', fontsize=13)
+ax2.set_title('Monopolio vs Competencia: Pérdida de Eficiencia', 
+             fontsize=14, fontweight='bold')
+ax2.legend(loc='upper right', fontsize=9)
+ax2.grid(True, alpha=0.3)
+ax2.set_xlim(0, 100)
+ax2.set_ylim(0, 110)
+
+plt.tight_layout()
+plt.show()
+```
+
+##### Comportamiento del Monopolista
+
+**Problema de maximización**:
+
+$
+\max_Q \pi(Q) = P(Q) \cdot Q - C(Q)
+$ {#eq-max-monopolio}
+
+**Condición de primer orden**:
+
+$
+\frac{d\pi}{dQ} = P(Q) + Q \cdot \frac{dP}{dQ} - \frac{dC}{dQ} = 0
+$ {#eq-cpo-monopolio}
+
+Esto implica:
+
+$
+IM(Q) = CM(Q)
+$ {#eq-im-cm}
+
+donde $IM = P + Q \cdot \frac{dP}{dQ}$ es el **ingreso marginal**.
+
+##### Regla de Lerner (Índice de Poder de Mercado)
+
+Reordenando la condición de primer orden:
+
+$
+\frac{P - CM}{P} = -\frac{1}{\varepsilon_D}
+$ {#eq-lerner}
+
+donde $\varepsilon_D = \frac{dQ}{dP} \cdot \frac{P}{Q}$ es la elasticidad-precio de la demanda (en valor absoluto).
+
+**Implicaciones**:
+
+- El **margen** sobre costo marginal es inversamente proporcional a la elasticidad
+- Demanda más **inelástica** → Mayor poder de mercado
+- En equilibrio, $|\varepsilon_D| > 1$ (región elástica de la demanda)
+
+##### Comparación: Monopolio vs Competencia Perfecta
+
+| **Variable** | **Competencia Perfecta** | **Monopolio** | **Consecuencia** |
+|:---|:---:|:---:|:---|
+| Precio | $P^* = CM$ | $P_m > CM$ | Transferencia de excedente |
+| Cantidad | $Q^*$ (óptimo social) | $Q_m < Q^*$ | Reducción de producción |
+| Excedente Consumidor | Máximo | Reducido | Pérdida para consumidores |
+| Excedente Productor | Normal | Aumentado | Ganancia para monopolista |
+| **Excedente Total** | **Máximo** | **Reducido** | **DWL** |
+
+##### Regulación de Monopolios
+
+**Enfoques regulatorios principales**:
+
+1. **Regulación de precios**:
+   - $P = CM$: Recupera eficiencia pero puede causar pérdidas si hay costos fijos
+   - $P = CMe$: Permite beneficio normal pero mantiene ineficiencia
+
+2. **Subsidios**: Compensar pérdidas cuando se impone $P = CM$
+
+3. **Propiedad pública**: Operación estatal directa
+
+4. **Promoción de competencia**: Eliminación de barreras artificiales
+
+**Problemas de regulación**:
+
+- **Información asimétrica**: Regulador no conoce costos reales (problema principal-agente)
+- **Captura regulatoria**: Agencias cooptadas por empresas reguladas
+- **Costos administrativos**: Burocracia y supervisión costosas
+
+#### 3. Subastas: Diseño de Mecanismos de Revelación {#sec-subastas}
+
+##### Definición y Propósitos
+
+Una **subasta** es un mecanismo institucional diseñado para:
+
+1. **Asignar bienes** cuando no existe un precio de mercado establecido
+2. **Revelar valoraciones privadas** de los compradores
+3. **Determinar precios** a través de competencia estratégica
+4. **Maximizar ingresos** del vendedor (en muchos diseños)
+
+##### Clasificación de Subastas
+
+
