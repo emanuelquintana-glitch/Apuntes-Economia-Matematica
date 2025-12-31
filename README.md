@@ -3,7 +3,7 @@
 **Apuntes académicos basados en "Intermediate Microeconomics and Its Application" (11ª Edición) de Walter Nicholson y Christopher Snyder**
 
 ##  Autor
-**Emanuel Quintana Silva**  
+***Emanuel Quintana Silva***  
 Economista en formación | Universidad Pedagógica y Tecnológica de Colombia (UPTC)  
 Pasión por Econometría Computacional, Estadística y Ciencias Sociales  
  emanuel.quintana@uptc.edu.co  
