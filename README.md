@@ -1,6 +1,6 @@
 #  Apuntes de Microeconomía Intermedia
 
-**Apuntes académicos basados en "Intermediate Microeconomics and Its Application" (11ª Edición) de Walter Nicholson y Christopher Snyder**
+**Apuntes académicos basados en "Intermediate Microeconomics and Its Application" (11ª Edición) de Walter Nicholson y Christopher Snyder.**
 
 ##  Autor
 ***Emanuel Quintana Silva***  
