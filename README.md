@@ -142,6 +142,6 @@ Este es un proyecto académico abierto. Las contribuciones son bienvenidas en:
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 
-##  Referencia Principal.
+##  Referencia Principal
 
 *Nicholson, W., & Snyder, C. (2017). _Intermediate Microeconomics and Its Application_ (11th ed.). Cengage Learning.* 
