@@ -67,7 +67,7 @@ tidyverse, ggplot2, econometrics, micEcon, gameTheory
 # Julia
 JuMP, Optim, Plots, DataFrames, Distributions
 ```
-##  Cómo Usar Este Repositorio
+##  Cómo Usar Este Repositorio.
 
 ### Requisito
 ```bash
