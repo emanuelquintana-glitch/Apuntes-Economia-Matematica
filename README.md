@@ -20,7 +20,7 @@ Crear apuntes interactivos y computacionales del clásico texto de Nicholson & S
 
 ##  Estructura del Libro (Basado en Nicholson & Snyder 11E)
 
-### Parte I: Introducción
+### Parte I: Introducción.
 1. Introducción a la Microeconomía
 2. Modelos Económicos y Matemáticas
 
