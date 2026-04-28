@@ -30,7 +30,7 @@ Crear apuntes interactivos y computacionales del clásico texto de Nicholson & S
 5. Demanda Individual y de Mercado
 6. Aplicaciones del Modelo de Demanda
 
-### Parte III: Teoría de la Producción y Costos.
+### Parte III: Teoría de la Producción y Costos
 7. Tecnología de Producción
 8. Costos
 9. Maximización de Beneficios
